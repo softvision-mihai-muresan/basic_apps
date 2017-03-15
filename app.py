@@ -1,8 +1,18 @@
 from flask import Flask, render_template, request, json, session, redirect, url_for, escape, flash
 from hashlib import md5
+from flaskext.mysql import MySQL
 import os
 
 application = Flask(__name__)
+mysql = MySQL()
+
+# MySQL configurations
+application.config['MYSQL_DATABASE_USER'] = 'trainer'
+application.config['MYSQL_DATABASE_PASSWORD'] = 'trainer7'
+application.config['MYSQL_DATABASE_DB'] = 'qa_course'
+application.config['MYSQL_DATABASE_HOST'] = '52.2.195.57'
+application.secret_key = 'FEF9B%399-!8EF6- 4B16-[9BD4-092B1<85D632D'
+mysql.init_app(application)
 
 
 class ServerError(Exception):
@@ -17,6 +27,11 @@ def page_not_found(e):
 @application.route("/index")
 @application.route("/")
 def index():
+    if 'username' in session:
+        username_session = escape(session['username']).capitalize()
+        username_session = username_session.split('@')[0]
+
+        return render_template('index.html', session_user_name=username_session)
     return render_template('index.html')
 
 
@@ -30,25 +45,27 @@ def action_login():
     error = None
     try:
         if request.method == 'POST':
-            email_form = request.form['email']
+            email_form = request.form['inputEmail']
             cursor.execute("SELECT COUNT(1) FROM users WHERE email = '{0}';".format(email_form))
 
             if not cursor.fetchone()[0]:
                 raise ServerError('Invalid username')
 
-            password_form = request.form['password']
+            password_form = request.form['inputPassword']
             cursor.execute("SELECT password FROM users WHERE email = '{0}';".format(email_form))
 
             for row in cursor.fetchall():
-                if md5(md5(application.secret_key).hexdigest() + md5(password_form).hexdigest()).hexdigest() == row[0]:
-                    session['username'] = request.form['email']
+                hash_pwd = md5(md5(application.secret_key).hexdigest() + md5(password_form).hexdigest()).hexdigest()
+                print hash_pwd
+                if hash_pwd == row[0]:
+                    session['username'] = request.form['inputEmail']
                     conn.close()
-                    return redirect(url_for('FEr9B3998EF64B169BD4092B185D632D'))
+                    return redirect(url_for('index'))
             raise ServerError('Invalid password')
     except ServerError as e:
         error = str(e)
     conn.close()
-    return render_template('FEr9B3998EF64B169BD4092B185D632D.html', error=error)
+    return render_template('index.html', error=error)
 
 
 @application.route('/action_logout')
