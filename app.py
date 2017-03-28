@@ -56,7 +56,7 @@ def action_login():
 
             for row in cursor.fetchall():
                 hash_pwd = md5(md5(application.secret_key).hexdigest() + md5(password_form).hexdigest()).hexdigest()
-                print hash_pwd
+                print (hash_pwd)
                 if hash_pwd == row[0]:
                     session['username'] = request.form['inputEmail']
                     conn.close()
@@ -66,6 +66,36 @@ def action_login():
         error = str(e)
     conn.close()
     return render_template('index.html', error=error)
+
+
+@application.route('/action_register', methods=['POST'])
+def action_register():
+    conn = mysql.connect()
+    cursor = conn.cursor()
+    # read the posted values from the UI
+    _fname = request.form['inputFirstName']
+    _lname = request.form['inputLastName']
+    _email = request.form['inputEmail']
+    _password = request.form['inputPassword']
+
+    # validate the received values
+    if not _email and not _password:
+        return json.dumps({'html': '<span>Enter the required fields</span>'})
+    else:
+        json.dumps({'html': '<span>All fields good !!</span>'})
+
+        cursor.execute("SELECT COUNT(1) FROM users WHERE email = '{0}';".format(_email))
+
+        if cursor.fetchone()[0]:
+            flash('Email already used')
+            return redirect(url_for('index'))
+
+        _hashed_password = md5(md5(application.secret_key).hexdigest() + md5(_password).hexdigest()).hexdigest()
+        query = "INSERT INTO users (first_name, last_name, email, password) VALUES ('{0}', '{1}', '{2}', '{3}')".format(
+            _fname, _lname, _email, _hashed_password)
+        cursor.execute(query)
+        conn.commit()
+    return redirect(url_for('index'))
 
 
 @application.route('/action_logout')
