@@ -31,7 +31,7 @@ def index():
         username_session = escape(session['username']).capitalize()
         username_session = username_session.split('@')[0]
 
-        return render_template('index.html', session_user_name=username_session)
+        return render_template('index.html', session_user_name=username_session, row=session['rows'])
     return render_template('index.html')
 
 
@@ -56,10 +56,12 @@ def action_login():
 
             for row in cursor.fetchall():
                 hash_pwd = md5(md5(application.secret_key).hexdigest() + md5(password_form).hexdigest()).hexdigest()
-                print (hash_pwd)
                 if hash_pwd == row[0]:
                     session['username'] = request.form['inputEmail']
+                    cursor.execute("SELECT * FROM users WHERE email = '{0}';".format(email_form))
+                    row = cursor.fetchone()
                     conn.close()
+                    session['rows'] = row
                     return redirect(url_for('index'))
             raise ServerError('Invalid password')
     except ServerError as e:

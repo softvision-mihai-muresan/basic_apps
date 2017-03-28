@@ -43,7 +43,7 @@
                             {% if not session_user_name %}
                             <li><a href="{{ url_for('index') }}"><i class="fa fa-user"></i> My Account</a></li>
                             {% else %}
-                            <li><a href="#"><i class="fa fa-user"></i>{% print session_user_name %}</a></li>
+                            <li><a href="#" data-toggle="modal" data-target="#myAccountModal"><i class="fa fa-user" data-toggle="modal" data-target="#myModal"></i>{% print session_user_name %}</a></li>
                             {% endif %}
                             <!--<li><a href="#"><i class="fa fa-heart"></i> Wishlist</a></li>-->
                             <!--<li><a href="cart.html"><i class="fa fa-user"></i> My Cart</a></li>-->
@@ -77,9 +77,9 @@
                 <button id="btnLogIn" class="btn btn-lg btn-primary btn-block" type="submit">Log In</button>
             </form>
             </div>
-            <div class="modal-footer">
-              <!--<a href="#" data-dismiss="modal" data-toggle="modal" data-target="#mySignupModal">Sign Up</a>-->
-            </div>
+            <!--<div class="modal-footer">-->
+              <!--&lt;!&ndash;<a href="#" data-dismiss="modal" data-toggle="modal" data-target="#mySignupModal">Sign Up</a>&ndash;&gt;-->
+            <!--</div>-->
           </div>
         </div>
       </div>
@@ -110,12 +110,60 @@
                 <button id="btnRegister" class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
             </form>
             </div>
-            <div class="modal-footer">
-              <!--<a href="#" data-dismiss="modal" data-toggle="modal" data-target="#mySignupModal">Sign Up</a>-->
-            </div>
+            <!--<div class="modal-footer">-->
+              <!--&lt;!&ndash;<a href="#" data-dismiss="modal" data-toggle="modal" data-target="#mySignupModal">Sign Up</a>&ndash;&gt;-->
+            <!--</div>-->
           </div>
         </div>
       </div>
+
+        {% if session_user_name %}
+        <!--Modal Account-->
+        <div class="modal fade" id="myAccountModal" role="dialog">
+            <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">Account info</h4>
+                </div>
+                <div class="modal-body">
+                  <div class="container-fluid">
+          <div class="row">
+            <div class="col-sm-3">
+              First Name
+            </div>
+            <div class="col-sm-9">
+              {% print row[0] %}
+            </div>
+            <div class="col-sm-3">
+              Last Name
+            </div>
+            <div class="col-sm-9">
+              {% print row[1] %}
+            </div>
+            <div class="col-sm-3">
+              Email
+            </div>
+            <div class="col-sm-9">
+              {% print row[2] %}
+            </div>
+              <div class="col-sm-3">
+              Password
+            </div>
+            <div class="col-sm-9">
+              {% print row[3] %}
+            </div>
+          </div>
+        </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+         {% endif %}
 
                 <div class="col-md-4">
                     <!--<div class="header-right">-->
