@@ -41,7 +41,7 @@
                     <div class="user-menu">
                         <ul>
                             {% if not session_user_name %}
-                            <li><a href="{{ url_for('index') }}"><i class="fa fa-user"></i> My Account</a></li>
+                            <li><a href="javascript:;"><i class="fa fa-user"></i> My Account</a></li>
                             {% else %}
                             <li><a href="#" data-toggle="modal" data-target="#myAccountModal"><i class="fa fa-user" data-toggle="modal" data-target="#myModal"></i>{% print session_user_name %}</a></li>
                             {% endif %}
@@ -108,12 +108,12 @@
                 <label for="inputPasswordLogin" class="sr-only">Password</label>
                 <input type="password" name="inputPassword" id="inputRegisterPasswordLogin" class="form-control" placeholder="Password" required>
 
-                <button id="btnRegister" class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
+                <button id="btnRegister" class="btn  btn-primary " type="submit">Register</button>
             </form>
             </div>
-            <!--<div class="modal-footer">-->
-              <!--&lt;!&ndash;<a href="#" data-dismiss="modal" data-toggle="modal" data-target="#mySignupModal">Sign Up</a>&ndash;&gt;-->
-            <!--</div>-->
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
           </div>
         </div>
       </div>
@@ -137,7 +137,7 @@
               {% print row[0] %}
             </div>
             <div class="col-sm-3">
-              Last Name
+              last Name
             </div>
             <div class="col-sm-9">
               {% print row[1] %}
