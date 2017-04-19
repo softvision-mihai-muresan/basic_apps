@@ -32,8 +32,8 @@ def index():
         username_session = escape(session['username']).capitalize()
         username_session = username_session.split('@')[0]
 
-        return render_template('brb.html', session_user_name=username_session, row=session['rows'])
-    return render_template('brb.html')
+        return render_template('index.html', session_user_name=username_session, row=session['rows'])
+    return render_template('index.html')
 
 
 @application.route("/cart")
