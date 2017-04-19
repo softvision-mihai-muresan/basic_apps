@@ -1004,4 +1004,8 @@ div.cart-collaterals ul.products li.product:hover .add_to_cart_button{background
   color: #1abc9c;
 }
 
+.margin_correcter{
+    margin-bottom: 5px;
+    height: 38px;
+}
 
