@@ -35,6 +35,46 @@ def index():
     return render_template('index.html')
 
 
+@application.route("/cart")
+def cart():
+    if 'username' in session:
+        username_session = escape(session['username']).capitalize()
+        username_session = username_session.split('@')[0]
+
+        return render_template('cart.html', session_user_name=username_session)
+    return render_template('cart.html')
+
+
+@application.route("/checkout")
+def checkout():
+    if 'username' in session:
+        username_session = escape(session['username']).capitalize()
+        username_session = username_session.split('@')[0]
+
+        return render_template('checkout.html', session_user_name=username_session)
+    return render_template('checkout.html')
+
+
+@application.route("/shop")
+def shop():
+    if 'username' in session:
+        username_session = escape(session['username']).capitalize()
+        username_session = username_session.split('@')[0]
+
+        return render_template('shop.html', session_user_name=username_session)
+    return render_template('shop.html')
+
+
+@application.route("/single_product")
+def single_product():
+    if 'username' in session:
+        username_session = escape(session['username']).capitalize()
+        username_session = username_session.split('@')[0]
+
+        return render_template('single_product.html', session_user_name=username_session)
+    return render_template('single_product.html')
+
+
 @application.route('/action_login', methods=['POST'])
 def action_login():
     conn = mysql.connect()
@@ -108,4 +148,4 @@ def action_logout():
 
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
-    application.run(port=port)
+    application.run(host="0.0.0.0", port=port)
