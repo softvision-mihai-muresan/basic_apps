@@ -70,7 +70,7 @@
               <h4 class="modal-title text-xs-center">Log In</h4>
             </div>
             <div class="modal-body">
-              <form action="{{ url_for('action_login') }}" method=POST class="form-signin">
+              <form action="{{ url_for('action_login') }}" method=POST class="form-signin" id="frmlgn">
                 <label for="inputEmailLogin" class="sr-only">Email Address</label>
                 <input type="email" name="inputEmail" id="inputEmailLogin" class="form-control margin_correcter" placeholder="Email Address" required autofocus>
                 <label for="inputPasswordLogin" class="sr-only">Password</label>
@@ -95,7 +95,7 @@
               <h4 class="modal-title text-xs-center">Register</h4>
             </div>
             <div class="modal-body">
-              <form action="{{ url_for('action_register') }}" method=POST class="form-signin">
+              <form action="{{ url_for('action_register') }}" method=POST class="form-signin" id="frmreg">
                 <label for="inputFirstName" class="sr-only">First Name</label>
                 <input type="text" name="inputFirstName" id="inputFirstName" class="form-control margin_correcter" placeholder="First Name" required autofocus>
 

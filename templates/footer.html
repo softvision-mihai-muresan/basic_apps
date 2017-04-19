@@ -93,7 +93,14 @@
     <!-- jQuery easing -->
     <script src="{{ url_for('static', filename='js/jquery.easing.1.3.min.js') }}"></script>
 
+    <!--jQuery validation-->
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.16/jquery.validate.min.js"></script>
+
     <!-- Main Script -->
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script>
+    $('#frmlgn').validate();
+    $('#frmreg').validate();
+    </script>
 
 {% endblock %}
