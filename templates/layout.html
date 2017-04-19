@@ -40,9 +40,7 @@
                 <div class="col-md-8">
                     <div class="user-menu">
                         <ul>
-                            {% if not session_user_name %}
-                            <li><a href="javascript:;"><i class="fa fa-user"></i> My Account</a></li>
-                            {% else %}
+                            {% if session_user_name %}
                             <li><a href="#" data-toggle="modal" data-target="#myAccountModal"><i class="fa fa-user" data-toggle="modal" data-target="#myModal"></i>{% print session_user_name %}</a></li>
                             {% endif %}
                             <!--<li><a href="#"><i class="fa fa-heart"></i> Wishlist</a></li>-->
