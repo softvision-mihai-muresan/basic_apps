@@ -86,7 +86,7 @@ def action_login():
     error = None
     try:
         if request.method == 'POST':
-            email_form = request.form['inputEmail']
+            email_form = escape(request.form['inputEmail'])
             cursor.execute("SELECT COUNT(1) FROM users WHERE email = '{0}';".format(email_form))
 
             if not cursor.fetchone()[0]:
@@ -118,7 +118,8 @@ def action_register():
     # read the posted values from the UI
     _fname = request.form['inputFirstName']
     _lname = request.form['inputLastName']
-    _email = request.form['inputEmail']
+    _email = escape(request.form['inputEmail'])
+    print _email
     _password = request.form['inputPassword']
 
     # validate the received values
