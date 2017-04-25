@@ -22,7 +22,7 @@ class ServerError(Exception):
 @application.errorhandler(404)
 def page_not_found(e):
     # return render_template('index.html'), 404
-    return render_template('brb.html'), 404
+    return render_template('WIP.html'), 404
 
 
 @application.route("/index")
@@ -43,7 +43,7 @@ def cart():
         username_session = username_session.split('@')[0]
 
         return render_template('cart.html', session_user_name=username_session)
-    return render_template('cart.html')
+    return render_template('WIP.html')
 
 
 @application.route("/checkout")
@@ -53,7 +53,7 @@ def checkout():
         username_session = username_session.split('@')[0]
 
         return render_template('checkout.html', session_user_name=username_session)
-    return render_template('checkout.html')
+    return render_template('WIP.html')
 
 
 @application.route("/shop")
@@ -63,7 +63,7 @@ def shop():
         username_session = username_session.split('@')[0]
 
         return render_template('shop.html', session_user_name=username_session)
-    return render_template('shop.html')
+    return render_template('WIP.html')
 
 
 @application.route("/single_product")
@@ -73,7 +73,7 @@ def single_product():
         username_session = username_session.split('@')[0]
 
         return render_template('single_product.html', session_user_name=username_session)
-    return render_template('single_product.html')
+    return render_template('WIP.html')
 
 
 @application.route('/action_login', methods=['POST'])
