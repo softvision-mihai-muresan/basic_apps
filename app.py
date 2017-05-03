@@ -52,8 +52,8 @@ def checkout():
         username_session = escape(session['username']).capitalize()
         username_session = username_session.split('@')[0]
 
-        return render_template('WIP.html', session_user_name=username_session)
-    return render_template('WIP.html')
+        return render_template('checkout.html', session_user_name=username_session)
+    return render_template('checkout.html')
 
 
 @application.route("/shop")
