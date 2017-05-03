@@ -43,7 +43,7 @@ def cart():
         username_session = username_session.split('@')[0]
 
         return render_template('cart.html', session_user_name=username_session)
-    return render_template('WIP.html')
+    return render_template('cart.html')
 
 
 @application.route("/checkout")
@@ -52,7 +52,7 @@ def checkout():
         username_session = escape(session['username']).capitalize()
         username_session = username_session.split('@')[0]
 
-        return render_template('checkout.html', session_user_name=username_session)
+        return render_template('WIP.html', session_user_name=username_session)
     return render_template('WIP.html')
 
 
@@ -62,8 +62,8 @@ def shop():
         username_session = escape(session['username']).capitalize()
         username_session = username_session.split('@')[0]
 
-        return render_template('shop.html', session_user_name=username_session)
-    return render_template('WIP.html')
+        return render_template('shop.html', session_user_name=username_session, row=session['rows'])
+    return render_template('shop.html')
 
 
 @application.route("/single_product")
@@ -72,7 +72,7 @@ def single_product():
         username_session = escape(session['username']).capitalize()
         username_session = username_session.split('@')[0]
 
-        return render_template('single_product.html', session_user_name=username_session)
+        return render_template('WIP.html', session_user_name=username_session)
     return render_template('WIP.html')
 
 
