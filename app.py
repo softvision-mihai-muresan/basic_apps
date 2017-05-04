@@ -40,9 +40,9 @@ def index():
 def cart():
     conn = mysql.connect()
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM products WHERE product_id='{}';".format(session["added_products"][0]))
-    session["cart"] = cursor.fetchall()
-    print(session["cart"][0])
+    if "added_products" in session:
+        cursor.execute("SELECT * FROM products WHERE product_id='{}';".format(session["added_products"][0]))
+        session["cart"] = cursor.fetchall()
     if 'username' in session:
         username_session = escape(session['username']).capitalize()
         username_session = username_session.split('@')[0]
