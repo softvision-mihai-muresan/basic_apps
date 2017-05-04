@@ -227,7 +227,9 @@
                         <li class="active"><a href="{{ url_for('index') }}">Home</a></li>
                         <li><a href="{{ url_for('shop') }}">Shop page</a></li>
                         <!--<li><a href="{{ url_for('single_product') }}">Single product</a></li>-->
+                        {% if session_user_name %}
                         <li ><a href="{{ url_for('cart') }}">Cart</a></li>
+                        {% endif %}
                         <!--<li><a href="{{ url_for('checkout') }}">Checkout</a></li>-->
                         <!--<li><a href="#">Category</a></li>-->
                         <!--<li><a href="#">Others</a></li>-->

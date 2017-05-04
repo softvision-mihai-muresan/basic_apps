@@ -19,13 +19,13 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-4">
-                    <div class="single-sidebar">
-                        <h2 class="sidebar-title">Search Products</h2>
-                        <form action="#">
-                            <input type="text" placeholder="Search products...">
-                            <input type="submit" value="Search">
-                        </form>
-                    </div>
+                    <!--<div class="single-sidebar">-->
+                        <!--<h2 class="sidebar-title">Search Products</h2>-->
+                        <!--<form action="#">-->
+                            <!--<input type="text" placeholder="Search products...">-->
+                            <!--<input type="submit" value="Search">-->
+                        <!--</form>-->
+                    <!--</div>-->
                     
                     <div class="single-sidebar">
                         <h2 class="sidebar-title">Products</h2>
@@ -74,7 +74,7 @@
                 <div class="col-md-8">
                     <div class="product-content-right">
                         <div class="woocommerce">
-                            <form method="post" action="#">
+                            <form method="post" action="{{ url_for('action_remove_from_cart') }}">
                                 <table cellspacing="0" class="shop_table cart">
                                     <thead>
                                         <tr>
@@ -87,42 +87,46 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                    {% if cart %}
                                         <tr class="cart_item">
                                             <td class="product-remove">
-                                                <a title="Remove this item" class="remove" href="#">×</a> 
+                                                <form action="{{ url_for('action_remove_from_cart') }}" method=POST>
+                                                    <button title="Remove this item" class="remove" type="submit">×</button>
+                                                </form>
                                             </td>
 
                                             <td class="product-thumbnail">
-                                                <a href="single-product.html"><img width="145" height="145" alt="poster_1_up" class="shop_thumbnail" src="{{ url_for('static', filename='img/product-thumb-2.jpg') }}"></a>
+                                                <a href="single-product.html"><img width="145" height="145" alt="poster_1_up" class="shop_thumbnail" src="{{ url_for('static', filename='img/'+cart[3]) }}"></a>
                                             </td>
 
                                             <td class="product-name">
-                                                <a href="single-product.html">Ship Your Idea</a> 
+                                                <a href="single-product.html">{{ cart[1] }}</a>
                                             </td>
 
                                             <td class="product-price">
-                                                <span class="amount">£15.00</span> 
+                                                <span class="amount">£{{ cart[2] }}</span>
                                             </td>
 
                                             <td class="product-quantity">
                                                 <div class="quantity buttons_added">
                                                     <input type="button" class="minus" value="-">
-                                                    <input type="number" size="4" class="input-text qty text" title="Qty" value="1" min="0" step="1">
+                                                    <input type="number" size="4" class="input-text qty text" title="Qty" value="1" min="0" step="1" >
                                                     <input type="button" class="plus" value="+">
                                                 </div>
                                             </td>
 
                                             <td class="product-subtotal">
-                                                <span class="amount">£15.00</span> 
+                                                <span class="amount">£{{ cart[2] }}</span>
                                             </td>
                                         </tr>
+                                    {% endif %}
                                         <tr>
                                             <td class="actions" colspan="6">
-                                                <div class="coupon">
-                                                    <label for="coupon_code">Coupon:</label>
-                                                    <input type="text" placeholder="Coupon code" value="" id="coupon_code" class="input-text" name="coupon_code">
-                                                    <input type="submit" value="Apply Coupon" name="apply_coupon" class="button">
-                                                </div>
+                                                <!--<div class="coupon">-->
+                                                    <!--<label for="coupon_code">Coupon:</label>-->
+                                                    <!--<input type="text" placeholder="Coupon code" value="" id="coupon_code" class="input-text" name="coupon_code">-->
+                                                    <!--<input type="submit" value="Apply Coupon" name="apply_coupon" class="button">-->
+                                                <!--</div>-->
                                                 <input type="submit" value="Update Cart" name="update_cart" class="button">
                                                 <input type="submit" value="Proceed to Checkout" name="proceed" class="checkout-button button alt wc-forward">
                                             </td>
@@ -141,7 +145,7 @@
                                         <a href="single-product.html">
                                             <img width="325" height="325" alt="T_4_front" class="attachment-shop_catalog wp-post-image" src="{{ url_for('static', filename='img/product-thumb-3.jpg') }}">
                                             <h3>Ship Your Idea</h3>
-                                            <span class="price"><span class="amount">£20.00</span></span>
+                                            <span class="price"><span class="amount">£{% if cart %}{{ cart[2] }}{% endif %}</span></span>
                                         </a>
 
                                         <a class="add_to_cart_button" data-quantity="1" data-product_sku="" data-product_id="22" rel="nofollow" href="single-product.html">Select options</a>
@@ -151,7 +155,7 @@
                                         <a href="single-product.html">
                                             <img width="325" height="325" alt="T_4_front" class="attachment-shop_catalog wp-post-image" src="{{ url_for('static', filename='img/product-thumb-4.jpg') }}">
                                             <h3>Ship Your Idea</h3>
-                                            <span class="price"><span class="amount">£20.00</span></span>
+                                            <span class="price"><span class="amount">£{% if cart %}{{ cart[2] }}{% endif %}</span></span>
                                         </a>
 
                                         <a class="add_to_cart_button" data-quantity="1" data-product_sku="" data-product_id="22" rel="nofollow" href="single-product.html">Select options</a>
@@ -167,7 +171,7 @@
                                     <tbody>
                                         <tr class="cart-subtotal">
                                             <th>Cart Subtotal</th>
-                                            <td><span class="amount">£15.00</span></td>
+                                            <td><span class="amount">£{% if cart %}{{ cart[2] }}{% endif %}</span></td>
                                         </tr>
 
                                         <tr class="shipping">
@@ -177,7 +181,7 @@
 
                                         <tr class="order-total">
                                             <th>Order Total</th>
-                                            <td><strong><span class="amount">£15.00</span></strong> </td>
+                                            <td><strong><span class="amount">{% if cart %}{{ cart[2] }}{% endif %}</span></strong> </td>
                                         </tr>
                                     </tbody>
                                 </table>

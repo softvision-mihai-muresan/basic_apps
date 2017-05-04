@@ -38,11 +38,19 @@ def index():
 
 @application.route("/cart")
 def cart():
+    conn = mysql.connect()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM products WHERE product_id='{}';".format(session["added_products"][0]))
+    session["cart"] = cursor.fetchall()
+    print(session["cart"][0])
     if 'username' in session:
         username_session = escape(session['username']).capitalize()
         username_session = username_session.split('@')[0]
-
-        return render_template('cart.html', session_user_name=username_session)
+        if "added_products" in session:
+            return render_template('cart.html', session_user_name=username_session, row=session['rows'],
+                                   cart=session["cart"][0])
+        else:
+            return render_template('cart.html', session_user_name=username_session, row=session['rows'])
     return render_template('cart.html')
 
 
@@ -116,39 +124,21 @@ def action_login():
     return render_template('index.html', error=error)
 
 
-@application.route('/action_addproduct')
+@application.route('/action_addproduct', methods=['POST'])
 def action_addproduct():
-    conn = mysql.connect()
-    cursor = conn.cursor()
+
+    if "added_products" not in session:
+        print("not in session")
+        session["added_products"] = []
+
     if 'username' not in session:
         return redirect(url_for('index'))
 
-    error = None
-    try:
-        if request.method == 'POST':
-            email_form = escape(request.form['inputEmail'])
-            cursor.execute("SELECT COUNT(1) FROM users WHERE email = '{0}';".format(email_form))
-
-            if not cursor.fetchone()[0]:
-                raise ServerError('Invalid username')
-
-            password_form = request.form['inputPassword']
-            cursor.execute("SELECT password FROM users WHERE email = '{0}';".format(email_form))
-
-            for row in cursor.fetchall():
-                hash_pwd = md5(md5(application.secret_key).hexdigest() + md5(password_form).hexdigest()).hexdigest()
-                if hash_pwd == row[0]:
-                    session['username'] = request.form['inputEmail']
-                    cursor.execute("SELECT * FROM users WHERE email = '{0}';".format(email_form))
-                    row = cursor.fetchone()
-                    conn.close()
-                    session['rows'] = row
-                    return redirect(url_for('index'))
-            raise ServerError('Something went wrong')
-    except ServerError as e:
-        error = str(e)
-    conn.close()
-    return render_template('index.html', error=error)
+    if request.method == 'POST':
+        product_id = escape(request.form['productID'])
+        session['added_products'].append(product_id)
+        return redirect(url_for('shop', added_products=session["added_products"]))
+    return render_template('index.html')
 
 
 @application.route('/action_register', methods=['POST'])
@@ -185,7 +175,24 @@ def action_register():
 @application.route('/action_logout')
 def action_logout():
     session.pop('username', None)
+    if "added_products" in session:
+        session.pop("added_products", None)
     return redirect(url_for('index'))
+
+
+@application.route('/action_remove_from_cart', methods=['POST'])
+def action_remove_from_cart():
+    if "added_products" in session:
+        session.pop("added_products", None)
+    if 'username' in session:
+        username_session = escape(session['username']).capitalize()
+        username_session = username_session.split('@')[0]
+        if "added_products" in session:
+            return render_template('cart.html', session_user_name=username_session, row=session['rows'],
+                                   cart=session["cart"][0])
+        else:
+            return render_template('cart.html', session_user_name=username_session, row=session['rows'])
+    return redirect(url_for('cart'))
 
 
 if __name__ == "__main__":
