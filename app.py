@@ -117,7 +117,7 @@ def action_login():
 
 
 @application.route('/action_addproduct')
-def action_login():
+def action_addproduct():
     conn = mysql.connect()
     cursor = conn.cursor()
     if 'username' not in session:
