@@ -58,12 +58,17 @@ def checkout():
 
 @application.route("/shop")
 def shop():
+    conn = mysql.connect()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM products;")
+    session["products"] = cursor.fetchall()
     if 'username' in session:
         username_session = escape(session['username']).capitalize()
         username_session = username_session.split('@')[0]
 
-        return render_template('shop.html', session_user_name=username_session, row=session['rows'])
-    return render_template('shop.html')
+        return render_template('shop.html', session_user_name=username_session, row=session['rows'],
+                               products=session["products"])
+    return render_template('shop.html', products=session["products"])
 
 
 @application.route("/single_product")
@@ -105,6 +110,41 @@ def action_login():
                     session['rows'] = row
                     return redirect(url_for('index'))
             raise ServerError('Invalid password')
+    except ServerError as e:
+        error = str(e)
+    conn.close()
+    return render_template('index.html', error=error)
+
+
+@application.route('/action_addproduct')
+def action_login():
+    conn = mysql.connect()
+    cursor = conn.cursor()
+    if 'username' not in session:
+        return redirect(url_for('index'))
+
+    error = None
+    try:
+        if request.method == 'POST':
+            email_form = escape(request.form['inputEmail'])
+            cursor.execute("SELECT COUNT(1) FROM users WHERE email = '{0}';".format(email_form))
+
+            if not cursor.fetchone()[0]:
+                raise ServerError('Invalid username')
+
+            password_form = request.form['inputPassword']
+            cursor.execute("SELECT password FROM users WHERE email = '{0}';".format(email_form))
+
+            for row in cursor.fetchall():
+                hash_pwd = md5(md5(application.secret_key).hexdigest() + md5(password_form).hexdigest()).hexdigest()
+                if hash_pwd == row[0]:
+                    session['username'] = request.form['inputEmail']
+                    cursor.execute("SELECT * FROM users WHERE email = '{0}';".format(email_form))
+                    row = cursor.fetchone()
+                    conn.close()
+                    session['rows'] = row
+                    return redirect(url_for('index'))
+            raise ServerError('Something went wrong')
     except ServerError as e:
         error = str(e)
     conn.close()
