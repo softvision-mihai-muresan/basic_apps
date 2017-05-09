@@ -6,7 +6,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>eElectronics - HTML eCommerce Template</title>
-
     <!-- Google Fonts -->
     <link href='http://fonts.googleapis.com/css?family=Titillium+Web:400,200,300,700,600' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:400,700,300' rel='stylesheet' type='text/css'>
@@ -130,30 +129,31 @@
                 <div class="modal-body">
                   <div class="container-fluid">
           <div class="row">
+              <!-- NOTE: This truncates FN/LN/Email to 80 chars in account info, but the title does not display the whole string - WIP to find a solution -->
             <div class="col-sm-3">
               First Name
             </div>
-            <div class="col-sm-9">
-              {% print row[1] %}
-            </div>
+              {% if row[1]|length >100 %}
+                <div class="col-sm-9" title="{{row[1]}}"> {%print row[1]|truncate(80) %} </div>
+              {% else %}
+                <div class="col-sm-9">{% print row[1]%}</div>
+              {% endif %}
             <div class="col-sm-3">
-              last Name
+              Last Name
             </div>
-            <div class="col-sm-9">
-              {% print row[2] %}
-            </div>
+            {% if row[2]|length >100 %}
+                <div class="col-sm-9" title="{{row[2]}}"> {%print row[2]|truncate(80) %} </div>
+              {% else %}
+                <div class="col-sm-9">{% print row[2]%}</div>
+              {% endif %}
             <div class="col-sm-3">
               Email
             </div>
-            <div class="col-sm-9">
-              {% print row[3] %}
-            </div>
-              <div class="col-sm-3">
-              Password
-            </div>
-            <div class="col-sm-9">
-              {% print row[4] %}
-            </div>
+            {% if row[3]|length >100 %}
+                <div class="col-sm-9" title="{{row[3]}}"> {%print row[3]|truncate(80) %} </div>
+              {% else %}
+                <div class="col-sm-9">{% print row[3]%}</div>
+              {% endif %}
           </div>
         </div>
                 </div>
@@ -224,7 +224,7 @@
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        <li class="active"><a href="{{ url_for('index') }}">Home</a></li>
+                        <li><a href="{{ url_for('index') }}">Home</a></li>
                         <li><a href="{{ url_for('shop') }}">Shop page</a></li>
                         <!--<li><a href="{{ url_for('single_product') }}">Single product</a></li>-->
                         {% if session_user_name %}
