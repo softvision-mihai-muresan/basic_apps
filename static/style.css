@@ -1010,3 +1010,7 @@ div.cart-collaterals ul.products li.product:hover .add_to_cart_button{background
     height: 38px;
 }
 
+.tooltip-inner {
+    max-width: none!important;
+    white-space: nowrap !important;
+}
