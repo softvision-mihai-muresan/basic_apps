@@ -84,5 +84,12 @@ jQuery(document).ready(function($){
         target: '.navbar-collapse',
         offset: 95
     })      
+	
+	//tooltip at first name, last name, email
+	    $(function() {
+		$("#firstname").tooltip();
+		$("#lastname").tooltip();
+		$("#email").tooltip();
+	    });		
 });
 
