@@ -134,7 +134,7 @@
               First Name
             </div>
               {% if row[1]|length >100 %}
-                <div class="col-sm-9" title="{{row[1]}}"> {%print row[1]|truncate(80) %} </div>
+                <div class="col-sm-9" id = "firstname" title="{{row[1]}}"> {%print row[1]|truncate(80) %} </div>
               {% else %}
                 <div class="col-sm-9">{% print row[1]%}</div>
               {% endif %}
@@ -142,7 +142,7 @@
               Last Name
             </div>
             {% if row[2]|length >100 %}
-                <div class="col-sm-9" title="{{row[2]}}"> {%print row[2]|truncate(80) %} </div>
+                <div class="col-sm-9" id = "lastname" title="{{row[2]}}"> {%print row[2]|truncate(80) %} </div>
               {% else %}
                 <div class="col-sm-9">{% print row[2]%}</div>
               {% endif %}
@@ -150,7 +150,7 @@
               Email
             </div>
             {% if row[3]|length >100 %}
-                <div class="col-sm-9" title="{{row[3]}}"> {%print row[3]|truncate(80) %} </div>
+                <div class="col-sm-9" id = "email" title="{{row[3]}}"> {%print row[3]|truncate(80) %} </div>
               {% else %}
                 <div class="col-sm-9">{% print row[3]%}</div>
               {% endif %}
