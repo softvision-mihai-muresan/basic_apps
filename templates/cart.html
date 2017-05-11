@@ -87,7 +87,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    {% if cart %}
+                                    {% for item in cart %}
                                         <tr class="cart_item">
                                             <td class="product-remove">
                                                 <form action="{{ url_for('action_remove_from_cart') }}" method=POST>
@@ -96,30 +96,30 @@
                                             </td>
 
                                             <td class="product-thumbnail">
-                                                <a href="single-product.html"><img width="145" height="145" alt="poster_1_up" class="shop_thumbnail" src="{{ url_for('static', filename='img/'+cart[3]) }}"></a>
+                                                <a href="single-product.html"><img width="145" height="145" alt="poster_1_up" class="shop_thumbnail" src="{{ url_for('static', filename='img/'+item[3]) }}"></a>
                                             </td>
 
                                             <td class="product-name">
-                                                <a href="single-product.html">{{ cart[1] }}</a>
+                                                <a href="single-product.html">{{ item[1] }}</a>
                                             </td>
 
                                             <td class="product-price">
-                                                <span class="amount">£{{ cart[2] }}</span>
+                                                <span class="amount">£{{ item[2] }}</span>
                                             </td>
 
                                             <td class="product-quantity">
                                                 <div class="quantity buttons_added">
                                                     <input type="button" class="minus" value="-">
-                                                    <input type="number" size="4" class="input-text qty text" title="Qty" value="1" min="0" step="1" >
+                                                    <input type="number" size="4" class="input-text qty text" title="Qty" value="{{ item[4] }}" min="0" step="1" >
                                                     <input type="button" class="plus" value="+">
                                                 </div>
                                             </td>
 
                                             <td class="product-subtotal">
-                                                <span class="amount">£{{ cart[2] }}</span>
+                                                <span class="amount">£{{ item[2] }}</span>
                                             </td>
                                         </tr>
-                                    {% endif %}
+                                    {% endfor %}
                                         <tr>
                                             <td class="actions" colspan="6">
                                                 <!--<div class="coupon">-->

@@ -40,15 +40,26 @@ def index():
 def cart():
     conn = mysql.connect()
     cursor = conn.cursor()
-    if "added_products" in session:
-        cursor.execute("SELECT * FROM products WHERE product_id='{}';".format(session["added_products"][0]))
-        session["cart"] = cursor.fetchall()
+    cursor.execute("SELECT product_id FROM cart WHERE user_id='{}';".format(session['user_id']))
+    products_in_cart = cursor.fetchall()
+    cart_list = []
+    extended_cart = []
+    quantities = []
     if 'username' in session:
         username_session = escape(session['username']).capitalize()
         username_session = username_session.split('@')[0]
-        if "added_products" in session:
+        if len(products_in_cart) > 0:
+            for id in products_in_cart:
+                cursor.execute("SELECT * FROM products WHERE product_id='{0}';".format(id[0]))
+                cart_list.append(cursor.fetchone())
+                cursor.execute("SELECT quantity FROM cart WHERE product_id='{0}' AND user_id='{1}';"
+                               .format(id[0], session['user_id']))
+                quantities.append(cursor.fetchone()[0])
+            for i in range(len(cart_list)):
+                extended_cart.append(list(cart_list[i]))
+                extended_cart[i].append(quantities[i])
             return render_template('cart.html', session_user_name=username_session, row=session['rows'],
-                                   cart=session["cart"][0])
+                                   cart=extended_cart, user_id=session['user_id'])
         else:
             return render_template('cart.html', session_user_name=username_session, row=session['rows'])
     return render_template('cart.html')
@@ -75,7 +86,7 @@ def shop():
         username_session = username_session.split('@')[0]
 
         return render_template('shop.html', session_user_name=username_session, row=session['rows'],
-                               products=session["products"])
+                               products=session["products"], user_id=session['user_id'])
     return render_template('shop.html', products=session["products"])
 
 
@@ -116,6 +127,7 @@ def action_login():
                     row = cursor.fetchone()
                     conn.close()
                     session['rows'] = row
+                    session['user_id'] = row[0]
                     return redirect(url_for('index'))
             raise ServerError('Invalid password')
     except ServerError as e:
@@ -126,18 +138,31 @@ def action_login():
 
 @application.route('/action_addproduct', methods=['POST'])
 def action_addproduct():
-
-    if "added_products" not in session:
-        print("not in session")
-        session["added_products"] = []
-
+    conn = mysql.connect()
+    cursor = conn.cursor()
     if 'username' not in session:
         return redirect(url_for('index'))
 
     if request.method == 'POST':
         product_id = escape(request.form['productID'])
-        session['added_products'].append(product_id)
-        return redirect(url_for('shop', added_products=session["added_products"]))
+        user_id = escape(request.form['userID'])
+        cursor.execute("SELECT COUNT(1) FROM cart WHERE product_id = '{0}' AND user_id = '{1}';".format(product_id,
+                                                                                                        user_id))
+
+        if cursor.fetchone()[0]:
+            query = "UPDATE cart SET quantity = quantity + 1 WHERE user_id = {0} AND product_id = {1}".format(user_id,
+                                                                                                              product_id)
+            cursor.execute(query)
+            conn.commit()
+        else:
+            query = "INSERT INTO cart (user_id, product_id, quantity) VALUES ('{0}', '{1}', {2})".format(user_id,
+                                                                                                         product_id, 1)
+            cursor.execute(query)
+            conn.commit()
+        # session['added_products'].append(product_id)
+        conn.close()
+        return redirect(url_for('shop'))
+    conn.close()
     return render_template('index.html')
 
 
@@ -169,6 +194,8 @@ def action_register():
             _fname, _lname, _email, _hashed_password)
         cursor.execute(query)
         conn.commit()
+        conn.close()
+    conn.close()
     return redirect(url_for('index'))
 
 
