@@ -26,9 +26,13 @@
     <!-- Bootstrap -->
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 
+    <!--Brython files-->
+    <script type="text/javascript" src="{{ url_for('static', filename='brython/brython.js') }}"></script>
+      <script type="text/javascript" src="{{ url_for('static', filename='brython/brython_stdlib.js') }}"></script>
+    <script type="text/python" src="{{ url_for('static', filename='brython/ajax.py') }}"></script>
     {% endblock %}
   </head>
-  <body onload="brython(1)">
+  <body onload="brython(10)">
     {% block header %}
     <!--header-->
         <div class="line">
@@ -41,7 +45,7 @@
             <div  class="header-top">
                 <div class="header-grid">
                     <ul class="header-in">
-                            <li ><a href="javascript:;">My Account   </a> </li>
+                            <li id="myacc""><a href="javascript:;">My Account   </a> </li>
                             <li>
                                 <select class="in-drop">
                                   <option value="Dollars" class="in-of">Dollars</option>
@@ -109,22 +113,13 @@
             <div class="clearfix"> </div>
         </div>
         <!---->
-        <div class="banner">
-        <div class="container">
-            <div class="banner-matter">
-                <h1>Get active get running<span>push your limits</span></h1>
-                <div class="out">
-                    <a href="single.html" class="find">FIND OUT MORE </a>
-                    <a href="single.html" class="shop">SHOP</a>
-                    <div class="clearfix"> </div>
-                </div>
-            </div>
-            </div>
-        </div>
+
     <!---->
     {% endblock %}
 
+    <div id="main_area">
     {% block content %}{% endblock %}
+    </div>
 
   </body>
 </html>
