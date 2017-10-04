@@ -53,6 +53,16 @@ def contact_link_click(ev):
 def logo_link_click(ev):
     get_data("/main_page", qs)
 
+
+def products_link_click(ev):
+    get_data("/products_page", qs)
+
 document['myacc'].bind('click', account_click)
 document['contact_link'].bind('click', contact_link_click)
 document['logo_link'].bind('click', logo_link_click)
+
+document['running_link'].bind('click', products_link_click)
+document['fitness_link'].bind('click', products_link_click)
+document['tennis_link'].bind('click', products_link_click)
+document['football_link'].bind('click', products_link_click)
+document['golf_link'].bind('click', products_link_click)

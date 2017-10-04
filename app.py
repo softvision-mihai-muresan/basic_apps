@@ -46,6 +46,11 @@ def contact():
     return render_template('contact.html')
 
 
+@application.route("/products_page", methods=['GET'])
+def products_pg():
+    return render_template('product.html')
+
+
 @application.route("/main_page", methods=['GET'])
 def main_pg():
     return render_template('main_page.html')

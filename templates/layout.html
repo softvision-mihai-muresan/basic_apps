@@ -95,13 +95,13 @@
                     <div class="h_menu4"><!-- start h_menu4 -->
                     <a class="toggleMenu" href="#">Menu</a>
                     <ul class="nav">
-                        <li class="active"><a href="product.html">Running</a></li>
-                        <li><a href="product.html">Fitness</a></li>
-                        <li><a href="product.html">Tennis</a>
+                        <li id="running_link" class="active"><a href="javascript:;">Running</a></li>
+                        <li id="fitness_link"><a href="javascript:;">Fitness</a></li>
+                        <li id="tennis_link"><a href="javascript:;">Tennis</a>
                         </li>
-                        <li><a href="product.html">Football</a></li>
-                        <li><a href="product.html">Golf</a></li>
-                        <li><a href="product.html">More <i> </i></a>
+                        <li id="football_link"><a href="javascript:;">Football</a></li>
+                        <li id="golf_link"><a href="javascript:;">Golf</a></li>
+                        <li><a href="javascript:;">More <i> </i></a>
                             <ul>
                                 <li id="contact_link"><a href="javascript:;">Contact</a></li>
                                 <li><a href="account.html">Account</a></li>
@@ -136,6 +136,6 @@
     <div id="main_area">
     {% block content %}{% endblock %}
     </div>
-
+    {% include "footer.html" %}
   </body>
 </html>
