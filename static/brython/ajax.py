@@ -1,6 +1,8 @@
 from browser import document, ajax
 
+# URL Query String
 qs = ''
+# URL to work on
 url = ''
 
 
@@ -29,7 +31,7 @@ def on_post_complete(req):
         #  Take our response and inject it into the html div with id='main'
         document["main_area"].html = req.text
     else:
-        document["main_area"].html = "error "+req.text
+        document["main_area"].html = "error " + req.text
 
 
 def on_get_complete(req):
@@ -37,12 +39,13 @@ def on_get_complete(req):
         #  Take our response and inject it into the html div with id='main'
         document["main_area"].html = req.text
     else:
-        document["main_area"].html = "error "+req.text
+        document["main_area"].html = "error " + req.text
 
 
 # get_data(url, qs)
 # post_data(url, qs)
 
-def account_click():
+def account_click(ev):
     get_data("/account", qs)
-document['myacc'].bind('click', lambda:  account_click)
+
+document['myacc'].bind('click', account_click)
