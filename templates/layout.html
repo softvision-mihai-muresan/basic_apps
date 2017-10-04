@@ -1,7 +1,6 @@
 <!doctype html>
 <html lang="en">
   <head>
-    {% block head %}
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -30,7 +29,24 @@
     <script type="text/javascript" src="{{ url_for('static', filename='brython/brython.js') }}"></script>
       <script type="text/javascript" src="{{ url_for('static', filename='brython/brython_stdlib.js') }}"></script>
     <script type="text/python" src="{{ url_for('static', filename='brython/ajax.py') }}"></script>
-    {% endblock %}
+    <!-- requried-jsfiles-for owl -->
+								<link href="{{ url_for('static', filename='css/owl.carousel.css') }}" rel="stylesheet">
+									<script src="{{ url_for('static', filename='js/owl.carousel.js') }}"></script>
+										<script>
+											$(document).ready(function() {
+											  $("#owl-demo").owlCarousel({
+												items : 5,
+												lazyLoad : true,
+												autoPlay : true,
+												navigation : true,
+												navigationText :  true,
+												pagination : false,
+											  });
+											});
+										  </script>
+								 <!-- //requried-jsfiles-for owl -->
+
+			<!-- start content_slider -->
   </head>
   <body onload="brython(10)">
     {% block header %}
@@ -40,7 +56,7 @@
         </div>
         <div class="header">
             <div class="logo">
-                <a href="javascript:;"><img src="{{ url_for('static', filename='images/logo.png') }}" alt="" ></a>
+                <a id="logo_link" href="javascript:;"><img src="{{ url_for('static', filename='images/logo.png') }}" alt="" ></a>
             </div>
             <div  class="header-top">
                 <div class="header-grid">

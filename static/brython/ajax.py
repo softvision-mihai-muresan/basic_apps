@@ -42,9 +42,6 @@ def on_get_complete(req):
         document["main_area"].html = "error " + req.text
 
 
-# get_data(url, qs)
-# post_data(url, qs)
-
 def account_click(ev):
     get_data("/account", qs)
 
@@ -52,5 +49,10 @@ def account_click(ev):
 def contact_link_click(ev):
     get_data("/contact", qs)
 
+
+def logo_link_click(ev):
+    get_data("/main_page", qs)
+
 document['myacc'].bind('click', account_click)
 document['contact_link'].bind('click', contact_link_click)
+document['logo_link'].bind('click', logo_link_click)

@@ -46,6 +46,10 @@ def contact():
     return render_template('contact.html')
 
 
+@application.route("/main_page", methods=['GET'])
+def main_pg():
+    return render_template('main_page.html')
+
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
     application.jinja_env.cache = {}
