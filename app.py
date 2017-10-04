@@ -41,6 +41,11 @@ def account():
     return render_template('account.html')
 
 
+@application.route("/contact", methods=['GET'])
+def contact():
+    return render_template('contact.html')
+
+
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
     application.jinja_env.cache = {}

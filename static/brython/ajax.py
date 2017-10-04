@@ -48,4 +48,9 @@ def on_get_complete(req):
 def account_click(ev):
     get_data("/account", qs)
 
+
+def contact_link_click(ev):
+    get_data("/contact", qs)
+
 document['myacc'].bind('click', account_click)
+document['contact_link'].bind('click', contact_link_click)
