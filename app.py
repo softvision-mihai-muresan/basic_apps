@@ -1,18 +1,6 @@
-from flask import Flask, render_template, request, json, session, redirect, url_for, escape, flash
-from hashlib import md5
-from flaskext.mysql import MySQL
+from flask import render_template, request, json, session, redirect, url_for, escape, flash
 import os
-
-application = Flask(__name__)
-# mysql = MySQL()
-#
-# # MySQL configurations
-# application.config['MYSQL_DATABASE_USER'] = 'trainer'
-# application.config['MYSQL_DATABASE_PASSWORD'] = 'trainer7'
-# application.config['MYSQL_DATABASE_DB'] = 'qa_course'
-# application.config['MYSQL_DATABASE_HOST'] = '52.2.195.57'
-# application.secret_key = 'FEF9B%399-!8EF6- 4B16-[9BD4-092B1<85D632D'
-# mysql.init_app(application)
+from orm import *
 
 
 class ServerError(Exception):
@@ -54,6 +42,21 @@ def products_pg():
 @application.route("/main_page", methods=['GET'])
 def main_pg():
     return render_template('main_page.html')
+
+
+@application.route("/register", methods=['POST'])
+def register():
+    # read the posted values from the UI
+    _fname = request.form['inputFirstName']
+    _lname = request.form['inputLastName']
+    _email = escape(request.form['inputEmail'])
+    _password = request.form['inputPassword']
+    # validate the received values
+    if not _email and not _password:
+        return json.dumps({'html': '<span>Enter the required fields</span>'})
+    else:
+        pass
+
 
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
