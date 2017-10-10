@@ -12,14 +12,15 @@ application = Flask(__name__)
 # application.config['MYSQL_DATABASE_DB'] = 'qa_course'
 # application.config['MYSQL_DATABASE_HOST'] = '54.244.61.130'
 
-application.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:compas10@54.244.61.130/qa_course'
+application.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:compas10@54.244.61.130/qa_course'
 application.secret_key = 'FEF9B%399-!8EF6- 4B16-[9BD4-092B1<85D632D'
 # mysql.init_app(application)
 db = SQLAlchemy(application)
+# db.create_all()
 
 
 def generate_hash(password):
-    return md5(md5(application.secret_key).hexdigest() + md5(password).hexdigest()).hexdigest()
+    return md5((md5(application.secret_key.encode("utf-8")).hexdigest() + md5(password.encode("utf-8")).hexdigest()).encode("utf-8")).hexdigest()
 
 
 def check_hash(password, stored_hash):
@@ -36,27 +37,14 @@ class User(db.Model):
     email = db.Column(db.String(120), unique=True)
     password = db.Column(db.Text, unique=False)
 
-    def __init__(self, email, first_name, last_name):
+    def __init__(self, first_name, last_name, email, password):
         self.email = email
-        self.first_name =first_name
+        self.first_name = first_name
         self.last_name = last_name
+        self.password = generate_hash(password)
 
     def __repr__(self):
         return '<User: {}>'.format(self.last_name)
-
-    @property
-    def password(self):
-        """
-        Prevent password from being accessed
-        """
-        raise AttributeError('password is not a readable attribute.')
-
-    @password.setter
-    def password(self, password):
-        """
-        Set password to a hashed password
-        """
-        self.password = generate_hash(password)
 
     def verify_password(self, password):
         """

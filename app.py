@@ -44,18 +44,36 @@ def main_pg():
     return render_template('main_page.html')
 
 
-@application.route("/register", methods=['POST'])
+@application.route("/register", methods=['GET'])
+def register_pg():
+    return render_template('register.html')
+
+
+@application.route("/register_action", methods=['POST'])
 def register():
     # read the posted values from the UI
-    _fname = request.form['inputFirstName']
-    _lname = request.form['inputLastName']
-    _email = escape(request.form['inputEmail'])
-    _password = request.form['inputPassword']
+    _fname = request.form.get('inputFirstName')
+    _lname = request.form.get('inputLastName')
+    _email = escape(request.form.get('inputEmail'))
+    _password = request.form.get('inputPassword')
+
+    print("-" * 40)
+    print(_fname)
+    print(_lname)
+    print(_email)
+    print(_password)
+    print("-" * 40)
     # validate the received values
     if not _email and not _password:
         return json.dumps({'html': '<span>Enter the required fields</span>'})
     else:
-        pass
+        user = User(_email, _fname, _lname, _password)
+        # user.password.set(_password)
+
+        db.session.add(user)
+        db.session.commit()
+        flash('Record was successfully added')
+        return redirect(url_for('show_all'))
 
 
 if __name__ == "__main__":

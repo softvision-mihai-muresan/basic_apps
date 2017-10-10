@@ -1,9 +1,18 @@
-from browser import document, ajax
+
+from browser import document, ajax, timer
 
 # URL Query String
 qs = ''
 # URL to work on
 url = ''
+
+
+def bind_register_link():
+    document['register_link'].bind('click', register_link_click)
+
+
+def bind_register_button():
+    document['register_btn'].bind('click', register_button_click)
 
 
 def post_data(url, qs):
@@ -42,10 +51,6 @@ def on_get_complete(req):
         document["main_area"].html = "error " + req.text
 
 
-def account_click(ev):
-    get_data("/account", qs)
-
-
 def contact_link_click(ev):
     get_data("/contact", qs)
 
@@ -56,6 +61,31 @@ def logo_link_click(ev):
 
 def products_link_click(ev):
     get_data("/products_page", qs)
+
+
+def register_button_click(ev):
+    _firstName = document['inputFirstName'].value
+    _lastName = document['inputLastName'].value
+    _email = document['inputEmail'].value
+    _password = document['inputPassword'].value
+    qs = {'inputFirstName': _firstName,
+          'inputLastName': _lastName,
+          'inputEmail': _email,
+          'inputPassword': _password}
+    post_data("/register_action", qs)
+    print(qs)
+    print(document["inputFirstName"].value)
+
+
+def account_click(ev):
+    get_data("/account", qs)
+    timer.set_timeout(bind_register_link, 1000)
+
+
+def register_link_click(ev):
+    get_data("/register", qs)
+    timer.set_timeout(bind_register_button, 1000)
+
 
 document['myacc'].bind('click', account_click)
 document['contact_link'].bind('click', contact_link_click)
