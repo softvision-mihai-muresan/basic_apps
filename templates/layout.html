@@ -10,6 +10,10 @@
       <link href="{{ url_for('static', filename='css/etalage.css') }}" rel="stylesheet" type="text/css" media="all" />
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+    <!-- Custom Theme files -->
+    <!--theme-style-->
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" type="text/css" media="all" />
+    <!--//theme-style-->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="keywords" content="Sport Responsive web template, Bootstrap Web Templates, Flat Web Templates, Andriod Compatible web template,
@@ -21,8 +25,6 @@
 
     <!-- Bootstrap -->
     <!--<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">-->
-
-
 
     <!--Brython files-->
     <script type="text/javascript" src="{{ url_for('static', filename='brython/brython.js') }}"></script>
@@ -44,10 +46,7 @@
 											});
 										  </script>
 								 <!-- //requried-jsfiles-for owl -->
-<!-- Custom Theme files -->
-    <!--theme-style-->
-    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" type="text/css" media="all" />
-    <!--//theme-style-->
+
 			<!-- start content_slider -->
   </head>
   <body onload="brython(10)">
@@ -97,12 +96,12 @@
                     <div class="h_menu4"><!-- start h_menu4 -->
                     <a class="toggleMenu" href="#">Menu</a>
                     <ul class="nav">
-                        <li id="running_link" class="active"><a href="javascript:;">Running</a></li>
-                        <li id="fitness_link"><a href="javascript:;">Fitness</a></li>
-                        <li id="tennis_link"><a href="javascript:;">Tennis</a>
+                        <li id="header_running_link" class="active"><a href="javascript:;">Running</a></li>
+                        <li id="header_fitness_link"><a href="javascript:;">Fitness</a></li>
+                        <li id="header_tennis_link"><a href="javascript:;">Tennis</a>
                         </li>
-                        <li id="football_link"><a href="javascript:;">Football</a></li>
-                        <li id="golf_link"><a href="javascript:;">Golf</a></li>
+                        <li id="header_football_link"><a href="javascript:;">Football</a></li>
+                        <li id="header_golf_link"><a href="javascript:;">Golf</a></li>
                         <li><a href="javascript:;">More <i> </i></a>
                             <ul>
                                 <li id="contact_link"><a href="javascript:;">Contact</a></li>
