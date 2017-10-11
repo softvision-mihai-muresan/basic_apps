@@ -12,11 +12,11 @@ application = Flask(__name__)
 # application.config['MYSQL_DATABASE_DB'] = 'qa_course'
 # application.config['MYSQL_DATABASE_HOST'] = '54.244.61.130'
 
-application.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:compas10@54.244.61.130/qa_course'
+# application.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:compas10@54.244.61.130/qa_course'
+application.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root@127.0.0.1/qa_course'
 application.secret_key = 'FEF9B%399-!8EF6- 4B16-[9BD4-092B1<85D632D'
 # mysql.init_app(application)
 db = SQLAlchemy(application)
-# db.create_all()
 
 
 def generate_hash(password):
@@ -38,9 +38,9 @@ class User(db.Model):
     password = db.Column(db.Text, unique=False)
 
     def __init__(self, first_name, last_name, email, password):
-        self.email = email
         self.first_name = first_name
         self.last_name = last_name
+        self.email = email
         self.password = generate_hash(password)
 
     def __repr__(self):
@@ -88,3 +88,5 @@ class Cart(db.Model):
 
     def __repr__(self):
         return '<Cart: {}>'.format(self.name)
+
+db.create_all()
