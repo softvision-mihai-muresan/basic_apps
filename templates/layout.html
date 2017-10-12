@@ -62,15 +62,17 @@
             <div  class="header-top">
                 <div class="header-grid">
                     <ul class="header-in">
-                            <li id="myacc"><a href="javascript:;">My Account   </a> </li>
-                            <li>
-                                <select class="in-drop">
-                                  <option value="Dollars" class="in-of">Dollars</option>
-                                  <option value="Euro" class="in-of">Euro</option>
-                                  <option value="Yen" class="in-of">Yen</option>
-                                </select>
-                            </li>
-                        </ul>
+                        {% if not g.user.is_authenticated %}
+                        <li id="myacc"><a href="javascript:;">My Account</a> </li>
+                        {% endif %}
+                        <li>
+                            <select class="in-drop">
+                              <option value="Dollars" class="in-of">Dollars</option>
+                              <option value="Euro" class="in-of">Euro</option>
+                              <option value="Yen" class="in-of">Yen</option>
+                            </select>
+                        </li>
+                    </ul>
                         <div class="search-box">
                             <div id="sb-search" class="sb-search">
                                 <form>

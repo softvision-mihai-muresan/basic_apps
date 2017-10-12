@@ -735,7 +735,7 @@ b.plus-on {
 	resize:none;
 	height:60px;		
 }
-.account-top input[type="submit"],.register-top input[type="submit"], #register_btn{
+.account-top input[type="submit"],.register-top input[type="submit"], #register_btn, #login_btn{
 	outline:none;
 	padding:7px 20px;
 	color:#FFF;

@@ -1,4 +1,4 @@
-from flask import render_template, request, json, session, redirect, url_for, escape, flash
+from flask import render_template, request, json, session, redirect, url_for, escape, flash, g
 import os
 from orm import *
 
@@ -8,6 +8,11 @@ class ServerError(Exception):
 
 
 login_manager.login_view = 'account'
+
+
+@application.before_request
+def before_request():
+    g.user = current_user
 
 
 @login_manager.user_loader
@@ -80,14 +85,20 @@ def register():
 @application.route("/login_action", methods=['POST'])
 def login():
     # read the posted values from the UI
-    _email = request.form.get('loginEmail')
-    _password = request.form.get('loginPassword')
+    _email = request.form.get('login_email')
+    _password = generate_hash(request.form.get('login_password'))
+
+    print(_email)
+    print(_password)
 
     # validate the received values
     if not _email and not _password:
         return json.dumps({'html': '<span>Enter the required fields</span>'})
     else:
         registered_user = User.query.filter_by(email=_email, password=_password).first()
+        if registered_user is None:
+            flash('Username or Password is invalid', 'error')
+            return render_template('account.html')
         login_user(registered_user)
         flash('Record was successfully added')
         return render_template('main_page.html')

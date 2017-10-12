@@ -16,7 +16,7 @@ def bind_register_button():
 
 
 def bind_login_button():
-    document['login_button'].bind('click', login_button_click)
+    document['login_btn'].bind('click', login_button_click)
 
 
 def post_data(url, qs):
@@ -80,16 +80,17 @@ def register_button_click(ev):
 
 
 def login_button_click(ev):
-    _email = document['inputEmail'].value
-    _password = document['inputPassword'].value
-    qs = {'loginEmail': _email,
-          'loginPassword': _password}
+    _email = document['login_email'].value
+    _password = document['login_password'].value
+    qs = {'login_email': _email,
+          'login_password': _password}
     post_data("/login_action", qs)
 
 
 def account_click(ev):
     get_data("/account", qs)
     timer.set_timeout(bind_register_link, 1000)
+    timer.set_timeout(bind_login_button, 1000)
 
 
 def register_link_click(ev):
