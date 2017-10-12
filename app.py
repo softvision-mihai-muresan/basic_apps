@@ -7,6 +7,14 @@ class ServerError(Exception):
     pass
 
 
+login_manager.login_view = 'account'
+
+
+@login_manager.user_loader
+def load_user(id):
+    return User.query.get(int(id))
+
+
 @application.errorhandler(404)
 def page_not_found(e):
     # return render_template('index.html'), 404
@@ -16,9 +24,9 @@ def page_not_found(e):
 @application.route("/index")
 @application.route("/")
 def index():
-    if 'username' in session:
-        username_session = escape(session['username']).capitalize()
-        username_session = username_session.split('@')[0]
+    if current_user is not None:
+        username_session = escape(current_user).capitalize()
+        # username_session = username_session.split('@')[0]
 
         return render_template('index.html', session_user_name=username_session, row=session['rows'])
     return render_template('index.html')
@@ -62,7 +70,6 @@ def register():
         return json.dumps({'html': '<span>Enter the required fields</span>'})
     else:
         user = User(_fname, _lname, _email, _password)
-        # user.password.set(_password)
 
         db.session.add(user)
         db.session.commit()
@@ -73,22 +80,23 @@ def register():
 @application.route("/login_action", methods=['POST'])
 def login():
     # read the posted values from the UI
-    _fname = request.form.get('inputFirstName')
-    _lname = request.form.get('inputLastName')
-    _email = request.form.get('inputEmail')
-    _password = request.form.get('inputPassword')
+    _email = request.form.get('loginEmail')
+    _password = request.form.get('loginPassword')
 
     # validate the received values
     if not _email and not _password:
         return json.dumps({'html': '<span>Enter the required fields</span>'})
     else:
-        user = User(_fname, _lname, _email, _password)
-        # user.password.set(_password)
-
-        db.session.add(user)
-        db.session.commit()
+        registered_user = User.query.filter_by(email=_email, password=_password).first()
+        login_user(registered_user)
         flash('Record was successfully added')
         return render_template('main_page.html')
+
+
+@application.route('/logout', methods=['GET'])
+def logout():
+    logout_user()
+    return render_template('main_page.html')
 
 
 if __name__ == "__main__":

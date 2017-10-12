@@ -1,7 +1,9 @@
 from flask import Flask
 from hashlib import md5
 from flask_sqlalchemy import SQLAlchemy
+from flask_login import LoginManager, login_user, logout_user, current_user, login_required
 # from flaskext.mysql import MySQL
+
 
 application = Flask(__name__)
 # mysql = MySQL()
@@ -17,6 +19,7 @@ application.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root@127.0.0.1/
 application.secret_key = 'FEF9B%399-!8EF6- 4B16-[9BD4-092B1<85D632D'
 # mysql.init_app(application)
 db = SQLAlchemy(application)
+login_manager = LoginManager()
 
 
 def generate_hash(password):
@@ -51,6 +54,18 @@ class User(db.Model):
         Check if hashed password matches actual password
         """
         return check_hash(self.password, password)
+
+    def is_authenticated(self):
+        return True
+
+    def is_active(self):
+        return True
+
+    def is_anonymous(self):
+        return False
+
+    def get_id(self):
+        return unicode(self.id)
 
 
 class Product(db.Model):
@@ -90,3 +105,4 @@ class Cart(db.Model):
         return '<Cart: {}>'.format(self.name)
 
 db.create_all()
+login_manager.init_app(application)

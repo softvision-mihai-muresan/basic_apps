@@ -82,8 +82,8 @@ def register_button_click(ev):
 def login_button_click(ev):
     _email = document['inputEmail'].value
     _password = document['inputPassword'].value
-    qs = {'inputEmail': _email,
-          'inputPassword': _password}
+    qs = {'loginEmail': _email,
+          'loginPassword': _password}
     post_data("/login_action", qs)
 
 
