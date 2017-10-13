@@ -22,18 +22,12 @@ def load_user(id):
 
 @application.errorhandler(404)
 def page_not_found(e):
-    # return render_template('index.html'), 404
     return render_template('WIP.html'), 404
 
 
 @application.route("/index")
 @application.route("/")
 def index():
-    if current_user is not None:
-        username_session = escape(current_user).capitalize()
-        # username_session = username_session.split('@')[0]
-
-        return render_template('index.html', session_user_name=username_session, row=session['rows'])
     return render_template('index.html')
 
 

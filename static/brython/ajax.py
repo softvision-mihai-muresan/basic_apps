@@ -30,9 +30,9 @@ def post_data(url, qs):
     req.send(qs)
 
 
-def get_data(url, qs):
+def get_data(url, qs, callbacks=None):
     req = ajax.ajax()
-    req.bind('complete', on_get_complete)
+    req.bind('complete', lambda req:on_get_complete(req, callbacks))
     # Bind the complete State to the on_get_complete function
     req.open('GET', url+'?'+qs, True)
     req.set_header('content-type', 'application/x-www-form-urlencoded')
@@ -47,10 +47,13 @@ def on_post_complete(req):
         document["main_area"].html = "error " + req.text
 
 
-def on_get_complete(req):
+def on_get_complete(req, callbacks=None):
     if req.status == 200 or req.status == 0:
         #  Take our response and inject it into the html div with id='main'
         document["main_area"].html = req.text
+        if callbacks is not None:
+            for callback in callbacks:
+                callback(req)
     else:
         document["main_area"].html = "error " + req.text
 
@@ -88,14 +91,13 @@ def login_button_click(ev):
 
 
 def account_click(ev):
-    get_data("/account", qs)
-    timer.set_timeout(bind_register_link, 1000)
-    timer.set_timeout(bind_login_button, 1000)
+    callbacks = [bind_register_link, bind_login_button]
+    get_data("/account", qs, callbacks)
 
 
 def register_link_click(ev):
-    get_data("/register", qs)
-    timer.set_timeout(bind_register_button, 1000)
+    callbacks = [bind_register_button]
+    get_data("/register", qs, callbacks)
 
 
 document['myacc'].bind('click', account_click)
