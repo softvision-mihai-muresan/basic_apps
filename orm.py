@@ -2,22 +2,12 @@ from flask import Flask
 from hashlib import md5
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, login_user, logout_user, current_user, login_required
-# from flaskext.mysql import MySQL
-
 
 application = Flask(__name__)
-# mysql = MySQL()
-
-# MySQL configurations
-# application.config['MYSQL_DATABASE_USER'] = 'root'
-# application.config['MYSQL_DATABASE_PASSWORD'] = 'compas10'
-# application.config['MYSQL_DATABASE_DB'] = 'qa_course'
-# application.config['MYSQL_DATABASE_HOST'] = '54.244.61.130'
 
 application.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:compas10@54.244.61.130/qa_course'
 # application.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root@127.0.0.1/qa_course'
 application.secret_key = 'FEF9B%399-!8EF6- 4B16-[9BD4-092B1<85D632D'
-# mysql.init_app(application)
 db = SQLAlchemy(application)
 login_manager = LoginManager()
 
