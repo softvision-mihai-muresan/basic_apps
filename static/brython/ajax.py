@@ -1,5 +1,6 @@
 
 from browser import document, ajax, timer
+from browser.local_storage import storage
 
 # URL Query String
 qs = ''
@@ -19,10 +20,26 @@ def bind_login_button(ev):
     document['login_btn'].bind('click', login_button_click)
 
 
-def post_data(url, qs):
+def bind_logout_button(ev):
+    try:
+        document['logout'].bind('click', logout_click)
+    except: pass
+
+
+def bind_my_acc_button(ev):
+    try:
+        document['myacc'].bind('click', account_click)
+    except: pass
+
+
+def reload_page(ev):
+    document['main_wrapper'].html = ev.text
+
+
+def post_data(url, qs, callbacks=None):
     req = ajax.ajax()
     # Bind the complete State to the on_post_complete function
-    req.bind('complete', on_post_complete)
+    req.bind('complete', lambda req:on_get_complete(req, callbacks))
     # send a POST request to the url
     req.open('POST', url, True)
     req.set_header('content-type', 'application/x-www-form-urlencoded')
@@ -39,10 +56,13 @@ def get_data(url, qs, callbacks=None):
     req.send()
 
 
-def on_post_complete(req):
+def on_post_complete(req, callbacks=None):
     if req.status == 200 or req.status == 0:
         #  Take our response and inject it into the html div with id='main'
         document["main_area"].html = req.text
+        if callbacks is not None:
+            for callback in callbacks:
+                callback(req)
     else:
         document["main_area"].html = "error " + req.text
 
@@ -54,6 +74,8 @@ def on_get_complete(req, callbacks=None):
         if callbacks is not None:
             for callback in callbacks:
                 callback(req)
+        bind_my_acc_button(req)
+        bind_logout_button(req)
     else:
         document["main_area"].html = "error " + req.text
 
@@ -83,11 +105,19 @@ def register_button_click(ev):
 
 
 def login_button_click(ev):
+    reload = [reload_page, bind_logout_button, bind_my_acc_button]
+
     _email = document['login_email'].value
     _password = document['login_password'].value
     qs = {'login_email': _email,
           'login_password': _password}
-    post_data("/login_action", qs)
+
+    post_data("/login_action", qs, reload)
+
+
+def logout_click(ev):
+    callback = [reload_page]
+    get_data("/logout", qs, callback)
 
 
 def account_click(ev):
@@ -99,8 +129,12 @@ def register_link_click(ev):
     callbacks = [bind_register_button]
     get_data("/register", qs, callbacks)
 
-
-document['myacc'].bind('click', account_click)
+try:
+    document['myacc'].bind('click', account_click)
+except: pass
+try:
+    document['myacc2'].bind('click', account_click)
+except: pass
 document['contact_link'].bind('click', contact_link_click)
 document['logo_link'].bind('click', logo_link_click)
 

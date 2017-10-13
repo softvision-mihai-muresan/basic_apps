@@ -8,6 +8,7 @@ application = Flask(__name__)
 application.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:compas10@54.244.61.130/qa_course'
 # application.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root@127.0.0.1/qa_course'
 application.secret_key = 'FEF9B%399-!8EF6- 4B16-[9BD4-092B1<85D632D'
+application.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(application)
 login_manager = LoginManager()
 

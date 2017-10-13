@@ -28,6 +28,8 @@ def page_not_found(e):
 @application.route("/index")
 @application.route("/")
 def index():
+    if g.user.is_authenticated:
+        return render_template('index.html', user_name=g.user.last_name)
     return render_template('index.html')
 
 
@@ -82,9 +84,6 @@ def login():
     _email = request.form.get('login_email')
     _password = generate_hash(request.form.get('login_password'))
 
-    print(_email)
-    print(_password)
-
     # validate the received values
     if not _email and not _password:
         return json.dumps({'html': '<span>Enter the required fields</span>'})
@@ -95,13 +94,13 @@ def login():
             return render_template('account.html')
         login_user(registered_user)
         flash('Record was successfully added')
-        return render_template('main_page.html')
+        return render_template('index.html')
 
 
 @application.route('/logout', methods=['GET'])
 def logout():
     logout_user()
-    return render_template('main_page.html')
+    return render_template('index.html')
 
 
 if __name__ == "__main__":
