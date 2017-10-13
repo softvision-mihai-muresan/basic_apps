@@ -35,21 +35,21 @@
 									<script src="{{ url_for('static', filename='js/owl.carousel.js') }}"></script>
 										<script>
 											$(document).ready(function() {
-											  $("#owl-demo").owlCarousel({
-												items : 5,
-												lazyLoad : true,
-												autoPlay : true,
-												navigation : true,
-												navigationText :  true,
-												pagination : false,
-											  });
+                                                $("#owl-demo").owlCarousel({
+                                                    items : 5,
+                                                    lazyLoad : true,
+                                                    autoPlay : true,
+                                                    navigation : true,
+                                                    navigationText :  true,
+                                                    pagination : false,
+                                                });
 											});
-										  </script>
+										 </script>
 								 <!-- //requried-jsfiles-for owl -->
 
 			<!-- start content_slider -->
   </head>
-  <body onload="brython(10)">
+  <body onload="brython(1)">
     {% block header %}
     <!--header-->
         <div class="line">
@@ -62,15 +62,17 @@
             <div  class="header-top">
                 <div class="header-grid">
                     <ul class="header-in">
-                            <li id="myacc"><a href="javascript:;">My Account   </a> </li>
-                            <li>
-                                <select class="in-drop">
-                                  <option value="Dollars" class="in-of">Dollars</option>
-                                  <option value="Euro" class="in-of">Euro</option>
-                                  <option value="Yen" class="in-of">Yen</option>
-                                </select>
-                            </li>
-                        </ul>
+                        {% if not g.user.is_authenticated %}
+                        <li id="myacc"><a href="javascript:;">My Account</a></li>
+                        {% endif %}
+                        <!--<li>-->
+                            <!--<select class="in-drop">-->
+                              <!--<option value="Dollars" class="in-of">Dollars</option>-->
+                              <!--<option value="Euro" class="in-of">Euro</option>-->
+                              <!--<option value="Yen" class="in-of">Yen</option>-->
+                            <!--</select>-->
+                        <!--</li>-->
+                    </ul>
                         <div class="search-box">
                             <div id="sb-search" class="sb-search">
                                 <form>
@@ -105,8 +107,8 @@
                         <li><a href="javascript:;">More <i> </i></a>
                             <ul>
                                 <li id="contact_link"><a href="javascript:;">Contact</a></li>
-                                <li><a href="account.html">Account</a></li>
-                                <li><a href="register.html">Register</a></li>
+                                <li id="myacc2"><a href="javascript:;">Account</a></li>
+                                <li id="header_register"><a href="javascript:;">Register</a></li>
                             </ul>
                         </li>
                     </ul>

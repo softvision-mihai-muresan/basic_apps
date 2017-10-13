@@ -1,38 +1,33 @@
-from flask import Flask, render_template, request, json, session, redirect, url_for, escape, flash
-from hashlib import md5
-from flaskext.mysql import MySQL
+from flask import render_template, request, json, session, redirect, url_for, escape, flash, g
 import os
-
-application = Flask(__name__)
-# mysql = MySQL()
-#
-# # MySQL configurations
-# application.config['MYSQL_DATABASE_USER'] = 'trainer'
-# application.config['MYSQL_DATABASE_PASSWORD'] = 'trainer7'
-# application.config['MYSQL_DATABASE_DB'] = 'qa_course'
-# application.config['MYSQL_DATABASE_HOST'] = '52.2.195.57'
-# application.secret_key = 'FEF9B%399-!8EF6- 4B16-[9BD4-092B1<85D632D'
-# mysql.init_app(application)
+from orm import *
 
 
 class ServerError(Exception):
     pass
 
 
+login_manager.login_view = 'account'
+
+
+@application.before_request
+def before_request():
+    g.user = current_user
+
+
+@login_manager.user_loader
+def load_user(id):
+    return User.query.get(int(id))
+
+
 @application.errorhandler(404)
 def page_not_found(e):
-    # return render_template('index.html'), 404
     return render_template('WIP.html'), 404
 
 
 @application.route("/index")
 @application.route("/")
 def index():
-    if 'username' in session:
-        username_session = escape(session['username']).capitalize()
-        username_session = username_session.split('@')[0]
-
-        return render_template('index.html', session_user_name=username_session, row=session['rows'])
     return render_template('index.html')
 
 
@@ -54,6 +49,60 @@ def products_pg():
 @application.route("/main_page", methods=['GET'])
 def main_pg():
     return render_template('main_page.html')
+
+
+@application.route("/register", methods=['GET'])
+def register_pg():
+    return render_template('register.html')
+
+
+@application.route("/register_action", methods=['POST'])
+def register():
+    # read the posted values from the UI
+    _fname = request.form.get('inputFirstName')
+    _lname = request.form.get('inputLastName')
+    _email = request.form.get('inputEmail')
+    _password = request.form.get('inputPassword')
+
+    # validate the received values
+    if not _email and not _password:
+        return json.dumps({'html': '<span>Enter the required fields</span>'})
+    else:
+        user = User(_fname, _lname, _email, _password)
+
+        db.session.add(user)
+        db.session.commit()
+        flash('Record was successfully added')
+        return render_template('main_page.html')
+
+
+@application.route("/login_action", methods=['POST'])
+def login():
+    # read the posted values from the UI
+    _email = request.form.get('login_email')
+    _password = generate_hash(request.form.get('login_password'))
+
+    print(_email)
+    print(_password)
+
+    # validate the received values
+    if not _email and not _password:
+        return json.dumps({'html': '<span>Enter the required fields</span>'})
+    else:
+        registered_user = User.query.filter_by(email=_email, password=_password).first()
+        if registered_user is None:
+            flash('Username or Password is invalid', 'error')
+            return render_template('account.html')
+        login_user(registered_user)
+        flash('Record was successfully added')
+        return render_template('main_page.html')
+
+
+@application.route('/logout', methods=['GET'])
+def logout():
+    logout_user()
+    return render_template('main_page.html')
+
 
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
