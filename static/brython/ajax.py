@@ -7,15 +7,15 @@ qs = ''
 url = ''
 
 
-def bind_register_link():
+def bind_register_link(ev):
     document['register_link'].bind('click', register_link_click)
 
 
-def bind_register_button():
+def bind_register_button(ev):
     document['register_btn'].bind('click', register_button_click)
 
 
-def bind_login_button():
+def bind_login_button(ev):
     document['login_btn'].bind('click', login_button_click)
 
 
