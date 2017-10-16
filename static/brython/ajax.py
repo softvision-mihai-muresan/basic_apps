@@ -1,6 +1,5 @@
 
 from browser import document, ajax, timer
-from browser.local_storage import storage
 
 # URL Query String
 qs = ''

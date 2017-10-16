@@ -81,8 +81,8 @@ def register():
 @application.route("/login_action", methods=['POST'])
 def login():
     # read the posted values from the UI
-    _email = request.form.get('login_email')
-    _password = generate_hash(request.form.get('login_password'))
+    _email = request.form['login_email']
+    _password = generate_hash(request.form['login_password'])
 
     # validate the received values
     if not _email and not _password:
@@ -93,7 +93,6 @@ def login():
             flash('Username or Password is invalid', 'error')
             return render_template('account.html')
         login_user(registered_user)
-        flash('Record was successfully added')
         return render_template('index.html')
 
 
