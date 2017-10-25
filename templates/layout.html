@@ -61,7 +61,7 @@
                 <div class="header-grid">
                     <ul class="header-in">
                         {% if g.user.is_authenticated %}
-                        <li id="myacc"><a href="javascript:;">{{ g.user.last_name }}</a></li>
+                        <li id="myacc4"><a href="javascript:;">{{ g.user.last_name }}</a></li>
                         {% endif %}
                         <!--<li>-->
                             <!--<select class="in-drop">-->
@@ -102,7 +102,7 @@
                         </li>
                         <li id="header_football_link"><a href="javascript:;">Football</a></li>
                         <li id="header_golf_link"><a href="javascript:;">Golf</a></li>
-                        <li><a href="javascript:;">More <i> </i></a>
+                        <li><a class="parent" href="javascript:;">More <i> </i></a>
                             <ul>
                                 <li id="contact_link"><a href="javascript:;">Contact</a></li>
                                 {% if not g.user.is_authenticated %}

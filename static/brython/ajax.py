@@ -7,16 +7,22 @@ qs = ''
 url = ''
 
 
-def bind_register_link(ev):
-    document['register_link'].bind('click', register_link_click)
+def bind_register_link(ev=None):
+    try:
+        document['header_register'].bind('click', register_link_click)
+    except: pass
 
 
 def bind_register_button(ev):
-    document['register_btn'].bind('click', register_button_click)
+    try:
+        document['register_btn'].bind('click', register_button_click)
+    except: pass
 
 
 def bind_login_button(ev):
-    document['login_btn'].bind('click', login_button_click)
+    try:
+        document['login_btn'].bind('click', login_button_click)
+    except: pass
 
 
 def bind_logout_button(ev):
@@ -25,10 +31,42 @@ def bind_logout_button(ev):
     except: pass
 
 
+def bind_single_product_link(ev, number):
+    try:
+        document["single_page_product_{}".format(number)].bind('click', products_id_click)
+    except: pass
+
+
 def bind_my_acc_button(ev):
     try:
         document['myacc'].bind('click', account_click)
     except: pass
+
+
+def bind_all_header_footer_links(ev):
+    elements = []
+    elements.append(document['contact_link'].bind('click', contact_link_click))
+    elements.append(document['logo_link'].bind('click', logo_link_click))
+
+    elements.append(document['header_running_link'].bind('click', products_link_click))
+    elements.append(document['header_fitness_link'].bind('click', products_link_click))
+    elements.append(document['header_tennis_link'].bind('click', products_link_click))
+    elements.append(document['header_football_link'].bind('click', products_link_click))
+    elements.append(document['header_golf_link'].bind('click', products_link_click))
+
+    elements.append(document['footer_running_link'].bind('click', products_link_click))
+    elements.append(document['footer_cycling_link'].bind('click', products_link_click))
+    elements.append(document['footer_triathlon_link'].bind('click', products_link_click))
+    elements.append(document['footer_fitness_link'].bind('click', products_link_click))
+    elements.append(document['footer_tennis_link'].bind('click', products_link_click))
+    elements.append(document['footer_more_sports_link'].bind('click', products_link_click))
+    elements.append(document['footer_style_link'].bind('click', products_link_click))
+    elements.append(document['footer_special_link'].bind('click', products_link_click))
+    elements.append(document['footer_brand_events_link'].bind('click', products_link_click))
+    for element in elements:
+        try:
+            element
+        except: pass
 
 
 def reload_page(ev):
@@ -74,6 +112,11 @@ def on_get_complete(req, callbacks=None):
             for callback in callbacks:
                 callback(req)
         bind_my_acc_button(req)
+        bind_register_link(req)
+        bind_register_button(req)
+        for i in range(9):
+            bind_single_product_link(req, i)
+        bind_all_header_footer_links(req)
         bind_logout_button(req)
     else:
         document["main_area"].html = "error " + req.text
@@ -89,6 +132,10 @@ def logo_link_click(ev):
 
 def products_link_click(ev):
     get_data("/products_page", qs)
+
+
+def products_id_click(ev):
+    get_data("/single_product", qs)
 
 
 def register_button_click(ev):
@@ -134,6 +181,8 @@ except: pass
 try:
     document['myacc2'].bind('click', account_click)
 except: pass
+
+bind_register_link()
 document['contact_link'].bind('click', contact_link_click)
 document['logo_link'].bind('click', logo_link_click)
 

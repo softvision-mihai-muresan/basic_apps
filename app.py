@@ -48,6 +48,11 @@ def products_pg():
     return render_template('product.html')
 
 
+@application.route("/single_product", methods=['GET'])
+def single_product_pg():
+    return render_template('single.html')
+
+
 @application.route("/main_page", methods=['GET'])
 def main_pg():
     return render_template('main_page.html')
@@ -75,7 +80,7 @@ def register():
         db.session.add(user)
         db.session.commit()
         flash('Record was successfully added')
-        return render_template('main_page.html')
+        return render_template('account.html')
 
 
 @application.route("/login_action", methods=['POST'])
