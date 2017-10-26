@@ -1,6 +1,7 @@
 from flask import render_template, request, json, session, redirect, url_for, escape, flash, g
 import os
 from orm import *
+from waitress import serve
 
 
 class ServerError(Exception):
@@ -98,16 +99,18 @@ def login():
             flash('Username or Password is invalid', 'error')
             return render_template('account.html')
         login_user(registered_user)
-        return render_template('index.html')
+        # return render_template('index.html')
+        return render_template('main_page.html')
 
 
 @application.route('/logout', methods=['GET'])
 def logout():
     logout_user()
-    return render_template('index.html')
-
+    return render_template('main_page.html')
 
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
     application.jinja_env.cache = {}
-    application.run(host="0.0.0.0", port=port)
+    # application.run(host="0.0.0.0", port=port)
+    serve(application, listen='0.0.0.0:{}'.format(port))
+

@@ -1,5 +1,5 @@
 
-from browser import document, ajax, timer
+from browser import document, ajax, timer, window
 
 # URL Query String
 qs = ''
@@ -9,11 +9,17 @@ url = ''
 
 def bind_register_link(ev=None):
     try:
+        document['header_register'].unbind('click', register_link_click)
+    except: pass
+    try:
         document['header_register'].bind('click', register_link_click)
     except: pass
 
 
 def bind_register_button(ev):
+    try:
+        document['register_btn'].unbind('click', register_button_click)
+    except: pass
     try:
         document['register_btn'].bind('click', register_button_click)
     except: pass
@@ -21,11 +27,17 @@ def bind_register_button(ev):
 
 def bind_login_button(ev):
     try:
+        document['login_btn'].unbind('click', login_button_click)
+    except: pass
+    try:
         document['login_btn'].bind('click', login_button_click)
     except: pass
 
 
-def bind_logout_button(ev):
+def bind_logout_button(ev=None):
+    try:
+        document['logout'].unbind('click', logout_click)
+    except: pass
     try:
         document['logout'].bind('click', logout_click)
     except: pass
@@ -33,11 +45,17 @@ def bind_logout_button(ev):
 
 def bind_single_product_link(ev, number):
     try:
+        document["single_page_product_{}".format(number)].unbind('click', products_id_click)
+    except: pass
+    try:
         document["single_page_product_{}".format(number)].bind('click', products_id_click)
     except: pass
 
 
 def bind_my_acc_button(ev):
+    try:
+        document['myacc'].unbind('click', account_click)
+    except: pass
     try:
         document['myacc'].bind('click', account_click)
     except: pass
@@ -70,7 +88,7 @@ def bind_all_header_footer_links(ev):
 
 
 def reload_page(ev):
-    document['main_wrapper'].html = ev.text
+    window.location.reload()
 
 
 def post_data(url, qs, callbacks=None):
@@ -116,7 +134,7 @@ def on_get_complete(req, callbacks=None):
         bind_register_button(req)
         for i in range(9):
             bind_single_product_link(req, i)
-        bind_all_header_footer_links(req)
+        # bind_all_header_footer_links(req)
         bind_logout_button(req)
     else:
         document["main_area"].html = "error " + req.text
@@ -183,6 +201,7 @@ try:
 except: pass
 
 bind_register_link()
+bind_logout_button()
 document['contact_link'].bind('click', contact_link_click)
 document['logo_link'].bind('click', logo_link_click)
 
