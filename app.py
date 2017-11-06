@@ -1,5 +1,6 @@
 from flask import render_template, request, json, session, redirect, url_for, escape, flash, g
 import os
+import typing
 from orm import *
 from waitress import serve
 
@@ -46,7 +47,8 @@ def contact():
 
 @application.route("/products_page", methods=['GET'])
 def products_pg():
-    return render_template('product.html')
+    products = Product.query.all()
+    return render_template('product.html', products=products)
 
 
 @application.route("/single_product", methods=['GET'])

@@ -61,7 +61,7 @@ class User(db.Model):
 
 class Product(db.Model):
     """
-    Create a Department table
+    Create a products table
     """
 
     __tablename__ = 'products'
@@ -69,7 +69,9 @@ class Product(db.Model):
     product_id = db.Column(db.Integer, primary_key=True)
     product_name = db.Column(db.String(60), unique=True)
     product_description = db.Column(db.Text)
-    product_price = db.Column(db.Integer)
+    product_price = db.Column(db.Float)
+    tags = db.Column(db.Text)
+    product_image = db.Column(db.String(30))
 
     def __repr__(self):
         return '<Product: {}>'.format(self.product_name)
@@ -77,7 +79,7 @@ class Product(db.Model):
 
 class Cart(db.Model):
     """
-    Create a Role table
+    Create a cart table
     """
 
     __tablename__ = 'cart'
