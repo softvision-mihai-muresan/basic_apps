@@ -53,7 +53,8 @@ def products_pg():
 
 @application.route("/single_product", methods=['GET'])
 def single_product_pg():
-    return render_template('single.html')
+    product = Product.query.filter_by(product_id=request.args.get('product')).first()
+    return render_template('single.html', product=product)
 
 
 @application.route("/main_page", methods=['GET'])
@@ -111,7 +112,7 @@ def logout():
     return render_template('main_page.html')
 
 if __name__ == "__main__":
-    port = int(os.environ.get('PORT', 5000))
+    port = int(os.environ.get('PORT', 5001))
     application.jinja_env.cache = {}
     # application.run(host="0.0.0.0", port=port)
     serve(application, listen='0.0.0.0:{}'.format(port))
