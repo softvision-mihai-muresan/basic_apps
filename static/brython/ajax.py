@@ -43,12 +43,12 @@ def bind_logout_button(ev=None):
     except: pass
 
 
-def bind_single_product_link(ev, number):
+def bind_single_product_link(ev, product):
     try:
-        document["single_page_product_{}".format(number)].unbind('click', products_id_click)
+        product.unbind('click', products_id_click)
     except: pass
     try:
-        document["single_page_product_{}".format(number)].bind('click', products_id_click)
+        product.bind('click', products_id_click)
     except: pass
 
 
@@ -132,8 +132,10 @@ def on_get_complete(req, callbacks=None):
         bind_my_acc_button(req)
         bind_register_link(req)
         bind_register_button(req)
-        for i in range(9):
-            bind_single_product_link(req, i)
+        try:
+            for product in document['all_products'].get(selector="a[id*='single_page_product_'"):
+                bind_single_product_link(req, product)
+        except KeyError: pass
         # bind_all_header_footer_links(req)
         bind_logout_button(req)
     else:
@@ -153,7 +155,8 @@ def products_link_click(ev):
 
 
 def products_id_click(ev):
-    get_data("/single_product", qs)
+    id = (ev.currentTarget.id).split("_")[3]
+    get_data("/single_product", "product={}".format(id))
 
 
 def register_button_click(ev):

@@ -3,33 +3,33 @@
 <div class="single">
 				<div class="col-md-9 top-in-single">
 					<div class="col-md-5 single-top">
-						<a href="javascript:;"><img class="img-responsive " src="{{ url_for('static', filename='images/sh2.png') }}" alt=""></a>
-						<ul id="etalage">
-							<li>
-								<a href="javascript:;">
-									<img class="etalage_thumb_image img-responsive" src="{{ url_for('static', filename='images/si1.jpg') }}" alt="" >
-									<img class="etalage_source_image img-responsive" src="{{ url_for('static', filename='images/s2.jpg') }}" alt="" >
-								</a>
-							</li>
-							<li>
-								<img class="etalage_thumb_image img-responsive" src="{{ url_for('static', filename='images/si2.jpg') }}" alt="" >
-								<img class="etalage_source_image img-responsive" src="{{ url_for('static', filename='images/s3.jpg') }}" alt="" >
-							</li>
-							<li>
-								<img class="etalage_thumb_image img-responsive" src="{{ url_for('static', filename='images/si.jpg') }}" alt=""  >
-								<img class="etalage_source_image img-responsive" src="{{ url_for('static', filename='images/s1.jpg') }}" alt="" >
-							</li>
-						    <li>
-								<img class="etalage_thumb_image img-responsive" src="{{ url_for('static', filename='images/si3.jpg') }}"  alt="" >
-								<img class="etalage_source_image img-responsive" src="{{ url_for('static', filename='images/s4.jpg') }}" alt="" >
-							</li>
-						</ul>
+						<a href="javascript:;"><img class="img-responsive " src="{{ url_for('static', filename='images/'+product.product_image) }}" alt=""></a>
+						<!--<ul id="etalage">-->
+							<!--<li>-->
+								<!--<a href="javascript:;">-->
+									<!--<img class="etalage_thumb_image img-responsive" src="{{ url_for('static', filename='images/si1.jpg') }}" alt="" >-->
+									<!--<img class="etalage_source_image img-responsive" src="{{ url_for('static', filename='images/s2.jpg') }}" alt="" >-->
+								<!--</a>-->
+							<!--</li>-->
+							<!--<li>-->
+								<!--<img class="etalage_thumb_image img-responsive" src="{{ url_for('static', filename='images/si2.jpg') }}" alt="" >-->
+								<!--<img class="etalage_source_image img-responsive" src="{{ url_for('static', filename='images/s3.jpg') }}" alt="" >-->
+							<!--</li>-->
+							<!--<li>-->
+								<!--<img class="etalage_thumb_image img-responsive" src="{{ url_for('static', filename='images/si.jpg') }}" alt=""  >-->
+								<!--<img class="etalage_source_image img-responsive" src="{{ url_for('static', filename='images/s1.jpg') }}" alt="" >-->
+							<!--</li>-->
+						    <!--<li>-->
+								<!--<img class="etalage_thumb_image img-responsive" src="{{ url_for('static', filename='images/si3.jpg') }}"  alt="" >-->
+								<!--<img class="etalage_source_image img-responsive" src="{{ url_for('static', filename='images/s4.jpg') }}" alt="" >-->
+							<!--</li>-->
+						<!--</ul>-->
 
 					</div>	
 					<div class="col-md-7 single-top-in">
 						<div class="single-para">
-							<h4>Lorem ipsum dolor sit amet, consectetur adipisicing elit</h4>
-							<p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old.</p>
+							<h4>{{ product.product_name }}</h4>
+							<p>{{ product.product_description }}</p>
 							<div class="star">
 								<ul>
 									<li><i> </i></li>
@@ -45,28 +45,28 @@
 							<div class="clearfix"> </div>
 							</div>
 							
-								<label  class="add-to">$32.8</label>
+								<label  class="add-to">${{ product.product_price }}</label>
 							
-							<div class="available">
-								<h6>Available Options :</h6>
-								<ul>
-									
-								<li>Size:<select>
-									<option>Large</option>
-									<option>Medium</option>
-									<option>small</option>
-									<option>Large</option>
-									<option>small</option>
-								</select></li>
-								<li>Cost:
-										<select>
-										<option>U.S.Dollar</option>
-										<option>Euro</option>
-									</select></li>
-							</ul>
-						</div>
+							<!--<div class="available">-->
+								<!--<h6>Available Options :</h6>-->
+								<!--<ul>-->
+									<!--<li>Size:<select>-->
+										<!--<option>Large</option>-->
+										<!--<option>Medium</option>-->
+										<!--<option>small</option>-->
+										<!--<option>Large</option>-->
+										<!--<option>small</option>-->
+									<!--</select></li>-->
+									<!--<li>Cost:-->
+											<!--<select>-->
+											<!--<option>U.S.Dollar</option>-->
+											<!--<option>Euro</option>-->
+										<!--</select>-->
+									<!--</li>-->
+								<!--</ul>-->
+							<!--</div>-->
 							
-								<a href="#" class="cart ">More details</a>
+								<a href="javascript:;" class="cart ">Add to cart</a>
 							
 						</div>
 					</div>
