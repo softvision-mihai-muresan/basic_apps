@@ -79,7 +79,6 @@ def bind_500_link(ev, link):
     except: pass
 
 
-
 def bind_my_acc_button(ev):
     try:
 
@@ -224,11 +223,12 @@ def register_button_click(ev):
     _lastName = document['inputLastName'].value
     _email = document['inputEmail'].value
     _password = document['inputPassword'].value
+    callback = [bind_login_button]
     qs = {'inputFirstName': _firstName,
           'inputLastName': _lastName,
           'inputEmail': _email,
           'inputPassword': _password}
-    post_data("/register_action", qs)
+    post_data("/register_action", qs, callback)
 
 
 def login_button_click(ev):
