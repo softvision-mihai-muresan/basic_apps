@@ -18,13 +18,24 @@ def before_request():
 
 
 @login_manager.user_loader
-def load_user(id):
+def load_user(id: int):
     return User.query.get(int(id))
 
 
 @application.errorhandler(404)
 def page_not_found(e):
     return render_template('WIP.html'), 404
+
+
+@application.route("/page_404", methods=['GET'])
+def page_not_found():
+    return render_template('WIP.html')
+
+
+@application.route("/page_500", methods=['GET'])
+def page_500():
+
+    return render_template('WIP.html')
 
 
 @application.route("/index")
@@ -47,6 +58,7 @@ def contact():
 
 @application.route("/products_page", methods=['GET'])
 def products_pg():
+    items = request.args.get('tags')
     products = Product.query.all()
     return render_template('product.html', products=products)
 
@@ -112,7 +124,7 @@ def logout():
     return render_template('main_page.html')
 
 if __name__ == "__main__":
-    port = int(os.environ.get('PORT', 5001))
+    port = int(os.environ.get('PORT', 5000))
     application.jinja_env.cache = {}
     # application.run(host="0.0.0.0", port=port)
     serve(application, listen='0.0.0.0:{}'.format(port))
