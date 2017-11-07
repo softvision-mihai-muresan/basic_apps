@@ -82,10 +82,13 @@ def bind_500_link(ev, link):
 
 def bind_my_acc_button(ev):
     try:
-        document['myacc'].unbind('click', account_click)
+
+        for element in document.get(selector="li[id*='myacc_'"):
+            element.unbind('click', account_click)
     except: pass
     try:
-        document['myacc'].bind('click', account_click)
+        for element in document.get(selector="li[id*='myacc_'"):
+            element.bind('click', account_click)
     except: pass
 
 
@@ -119,10 +122,18 @@ def reload_page(ev):
     window.location.reload()
 
 
+def is_login_error_message_visible(ev):
+    if len(document.get(selector="span[id='invalid_acc'")) > 0:
+        bind_login_button(ev)
+        return True
+    else:
+        reload_page(ev)
+
+
 def post_data(url, qs, callbacks=None):
     req = ajax.ajax()
     # Bind the complete State to the on_post_complete function
-    req.bind('complete', lambda req:on_get_complete(req, callbacks))
+    req.bind('complete', lambda req:on_post_complete(req, callbacks))
     # send a POST request to the url
     req.open('POST', url, True)
     req.set_header('content-type', 'application/x-www-form-urlencoded')
@@ -221,14 +232,12 @@ def register_button_click(ev):
 
 
 def login_button_click(ev):
-    reload = [reload_page, bind_logout_button, bind_my_acc_button]
-
     _email = document['login_email'].value
     _password = document['login_password'].value
+    callback = [is_login_error_message_visible, bind_logout_button, bind_my_acc_button]
     qs = {'login_email': _email,
           'login_password': _password}
-
-    post_data("/login_action", qs, reload)
+    post_data("/login_action", qs, callback)
 
 
 def logout_click(ev):
@@ -246,11 +255,10 @@ def register_link_click(ev):
     get_data("/register", qs, callbacks)
 
 try:
-    document['myacc'].bind('click', account_click)
+    for element in document.get(selector="li[id*='myacc_'"):
+        element.bind('click', account_click)
 except: pass
-try:
-    document['myacc2'].bind('click', account_click)
-except: pass
+
 
 bind_register_link()
 bind_logout_button()
