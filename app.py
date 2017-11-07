@@ -34,7 +34,7 @@ def page_not_found():
 
 @application.route("/page_500", methods=['GET'])
 def page_500():
-
+    deamoaca
     return render_template('WIP.html')
 
 

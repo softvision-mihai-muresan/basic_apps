@@ -16,6 +16,15 @@ def bind_register_link(ev=None):
     except: pass
 
 
+def bind_register_footer_link(ev=None):
+    try:
+        document['footer_signup'].unbind('click', register_link_click)
+    except: pass
+    try:
+        document['footer_signup'].bind('click', register_link_click)
+    except: pass
+
+
 def bind_register_button(ev):
     try:
         document['register_btn'].unbind('click', register_button_click)
@@ -150,17 +159,22 @@ def on_get_complete(req, callbacks=None):
                 callback(req)
         bind_my_acc_button(req)
         bind_register_link(req)
+        bind_register_footer_link(req)
         bind_register_button(req)
         try:
             for product in document['all_products'].get(selector="a[id*='single_page_product_'"):
                 bind_single_product_link(req, product)
         except KeyError: pass
         try:
+            for link in document['main_wrapper'].get(selector="li[class*='go_to_404'"):
+                bind_404_link(req, link)
+        except KeyError: pass
+        try:
             for link in document['main_wrapper'].get(selector="a[class*='go_to_404'"):
                 bind_404_link(req, link)
         except KeyError: pass
         try:
-            for link in document['main_wrapper'].get(selector="li[class*='page_500'"):
+            for link in document['main_wrapper'].get(selector="a[class*='page_500'"):
                 bind_500_link(req, link)
         except KeyError: pass
         # bind_all_header_footer_links(req)
@@ -243,6 +257,8 @@ bind_logout_button()
 # document['contact_link'].bind('click', contact_link_click)
 document['logo_link'].bind('click', logo_link_click)
 
+document['footer_signup'].bind('click', register_link_click)
+
 # document['header_running_link'].bind('click', products_link_click)
 # document['header_fitness_link'].bind('click', products_link_click)
 # document['header_tennis_link'].bind('click', products_link_click)
@@ -259,8 +275,11 @@ document['logo_link'].bind('click', logo_link_click)
 # document['footer_special_link'].bind('click', products_link_click)
 # document['footer_brand_events_link'].bind('click', products_link_click)
 
+for link in document['main_wrapper'].get(selector="li[class*='go_to_404'"):
+    link.bind('click', link_404_click)
+
 for link in document['main_wrapper'].get(selector="a[class*='go_to_404'"):
     link.bind('click', link_404_click)
 
-for link in document['main_wrapper'].get(selector="li[class*='page_500'"):
+for link in document['main_wrapper'].get(selector="a[class*='page_500'"):
     link.bind('click', link_500_click)
