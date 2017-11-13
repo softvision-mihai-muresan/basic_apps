@@ -93,24 +93,24 @@ def bind_my_acc_button(ev):
 
 def bind_all_header_footer_links(ev):
     elements = []
-    # elements.append(document['contact_link'].bind('click', contact_link_click))
+    elements.append(document['contact_link'].bind('click', contact_link_click))
     elements.append(document['logo_link'].bind('click', logo_link_click))
 
-    # elements.append(document['header_running_link'].bind('click', products_link_click))
-    # elements.append(document['header_fitness_link'].bind('click', products_link_click))
-    # elements.append(document['header_tennis_link'].bind('click', products_link_click))
-    # elements.append(document['header_football_link'].bind('click', products_link_click))
-    # elements.append(document['header_golf_link'].bind('click', products_link_click))
-    #
-    # elements.append(document['footer_running_link'].bind('click', products_link_click))
-    # elements.append(document['footer_cycling_link'].bind('click', products_link_click))
-    # elements.append(document['footer_triathlon_link'].bind('click', products_link_click))
-    # elements.append(document['footer_fitness_link'].bind('click', products_link_click))
-    # elements.append(document['footer_tennis_link'].bind('click', products_link_click))
-    # elements.append(document['footer_more_sports_link'].bind('click', products_link_click))
-    # elements.append(document['footer_style_link'].bind('click', products_link_click))
-    # elements.append(document['footer_special_link'].bind('click', products_link_click))
-    # elements.append(document['footer_brand_events_link'].bind('click', products_link_click))
+    elements.append(document['header_running_link'].bind('click', products_link_click))
+    elements.append(document['header_fitness_link'].bind('click', products_link_click))
+    elements.append(document['header_tennis_link'].bind('click', products_link_click))
+    elements.append(document['header_football_link'].bind('click', products_link_click))
+    elements.append(document['header_golf_link'].bind('click', products_link_click))
+
+    elements.append(document['footer_running_link'].bind('click', products_link_click))
+    elements.append(document['footer_cycling_link'].bind('click', products_link_click))
+    elements.append(document['footer_triathlon_link'].bind('click', products_link_click))
+    elements.append(document['footer_fitness_link'].bind('click', products_link_click))
+    elements.append(document['footer_tennis_link'].bind('click', products_link_click))
+    elements.append(document['footer_more_sports_link'].bind('click', products_link_click))
+    elements.append(document['footer_style_link'].bind('click', products_link_click))
+    elements.append(document['footer_special_link'].bind('click', products_link_click))
+    elements.append(document['footer_brand_events_link'].bind('click', products_link_click))
     for element in elements:
         try:
             element
@@ -175,18 +175,18 @@ def on_get_complete(req, callbacks=None):
             for product in document['all_products'].get(selector="a[id*='single_page_product_'"):
                 bind_single_product_link(req, product)
         except KeyError: pass
-        try:
-            for link in document['main_wrapper'].get(selector="li[class*='go_to_404'"):
-                bind_404_link(req, link)
-        except KeyError: pass
-        try:
-            for link in document['main_wrapper'].get(selector="a[class*='go_to_404'"):
-                bind_404_link(req, link)
-        except KeyError: pass
-        try:
-            for link in document['main_wrapper'].get(selector="a[class*='page_500'"):
-                bind_500_link(req, link)
-        except KeyError: pass
+        # try:
+        #     for link in document['main_wrapper'].get(selector="li[class*='go_to_404'"):
+        #         bind_404_link(req, link)
+        # except KeyError: pass
+        # try:
+        #     for link in document['main_wrapper'].get(selector="a[class*='go_to_404'"):
+        #         bind_404_link(req, link)
+        # except KeyError: pass
+        # try:
+        #     for link in document['main_wrapper'].get(selector="a[class*='page_500'"):
+        #         bind_500_link(req, link)
+        # except KeyError: pass
         # bind_all_header_footer_links(req)
         bind_logout_button(req)
     else:
@@ -262,32 +262,32 @@ except: pass
 
 bind_register_link()
 bind_logout_button()
-# document['contact_link'].bind('click', contact_link_click)
+document['contact_link'].bind('click', contact_link_click)
 document['logo_link'].bind('click', logo_link_click)
 
 document['footer_signup'].bind('click', register_link_click)
 
-# document['header_running_link'].bind('click', products_link_click)
-# document['header_fitness_link'].bind('click', products_link_click)
-# document['header_tennis_link'].bind('click', products_link_click)
-# document['header_football_link'].bind('click', products_link_click)
-# document['header_golf_link'].bind('click', products_link_click)
+document['header_running_link'].bind('click', products_link_click)
+document['header_fitness_link'].bind('click', products_link_click)
+document['header_tennis_link'].bind('click', products_link_click)
+document['header_football_link'].bind('click', products_link_click)
+document['header_golf_link'].bind('click', products_link_click)
+
+document['footer_running_link'].bind('click', products_link_click)
+document['footer_cycling_link'].bind('click', products_link_click)
+document['footer_triathlon_link'].bind('click', products_link_click)
+document['footer_fitness_link'].bind('click', products_link_click)
+document['footer_tennis_link'].bind('click', products_link_click)
+document['footer_more_sports_link'].bind('click', products_link_click)
+document['footer_style_link'].bind('click', products_link_click)
+document['footer_special_link'].bind('click', products_link_click)
+document['footer_brand_events_link'].bind('click', products_link_click)
+
+# for link in document['main_wrapper'].get(selector="li[class*='go_to_404'"):
+#     link.bind('click', link_404_click)
 #
-# document['footer_running_link'].bind('click', products_link_click)
-# document['footer_cycling_link'].bind('click', products_link_click)
-# document['footer_triathlon_link'].bind('click', products_link_click)
-# document['footer_fitness_link'].bind('click', products_link_click)
-# document['footer_tennis_link'].bind('click', products_link_click)
-# document['footer_more_sports_link'].bind('click', products_link_click)
-# document['footer_style_link'].bind('click', products_link_click)
-# document['footer_special_link'].bind('click', products_link_click)
-# document['footer_brand_events_link'].bind('click', products_link_click)
-
-for link in document['main_wrapper'].get(selector="li[class*='go_to_404'"):
-    link.bind('click', link_404_click)
-
-for link in document['main_wrapper'].get(selector="a[class*='go_to_404'"):
-    link.bind('click', link_404_click)
-
-for link in document['main_wrapper'].get(selector="a[class*='page_500'"):
-    link.bind('click', link_500_click)
+# for link in document['main_wrapper'].get(selector="a[class*='go_to_404'"):
+#     link.bind('click', link_404_click)
+#
+# for link in document['main_wrapper'].get(selector="a[class*='page_500'"):
+#     link.bind('click', link_500_click)
