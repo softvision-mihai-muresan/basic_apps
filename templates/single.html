@@ -32,15 +32,13 @@
 							<p>{{ product.product_description }}</p>
 							<div class="star">
 								<ul>
+									{% for i in range(star) %}
 									<li><i> </i></li>
-									<li><i> </i></li>
-									<li><i> </i></li>
-									<li><i> </i></li>
-									<li><i> </i></li>
+									{% endfor %}
 								</ul>
 								<div class="review">
-									<a href="#"> 3 reviews </a>/
-									<a href="#">  Write a review</a>
+									<a href="javascript:;"> {{ reviews|length }} review(s)</a>/
+									<a href="#area">  Write a review</a>
 								</div>
 							<div class="clearfix"> </div>
 							</div>
@@ -66,34 +64,26 @@
 								<!--</ul>-->
 							<!--</div>-->
 							
-								<a href="javascript:;" class="cart ">Add to cart</a>
+								<!--<a href="javascript:;" class="cart ">Add to cart</a>-->
 							
 						</div>
 					</div>
 				<div class="clearfix"> </div>
 				<div class="product-top">
 		<div class="col-md-9 top-in-single">
+			{% for review in reviews %}
 			<div class=" product-grid">
-				<h6>User Name</h6>
-				<p>Generic review to fill up some space because I have no clue what to actually write</p>
+				<h6>{{ review.user.first_name + " " + review.user.last_name }}</h6>
+				<p>{{ review.review }}</p>
 			</div>
 			<br />
-			<div class=" product-grid">
-				<h6>User Name</h6>
-				<p>Generic review to fill up some space because I have no clue what to actually write</p>
-			</div>
-			<br />
-			<div class=" product-grid">
-				<h6>User Name</h6>
-				<p>Generic review to fill up some space because I have no clue what to actually write</p>
-			</div>
-			<br />
+			{% endfor %}
 			<!--<div class="col-md-6 contact-grid">-->
 				<form>
 					<div>
-						<textarea placeholder="Post a review here" style="resize: none; height:100px; width:100%;"></textarea>
+						<textarea id="area" placeholder="Post a review here" style="resize: none; height:100px; width:100%;"></textarea>
 					</div>
-<br />
+					<br />
 					<div class="send-in">
 						<input type="submit" value="Post" >
 					</div>

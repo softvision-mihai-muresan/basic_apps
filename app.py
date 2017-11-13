@@ -65,8 +65,17 @@ def products_pg():
 
 @application.route("/single_product", methods=['GET'])
 def single_product_pg():
+    star_sum = 0
     product = Product.query.filter_by(product_id=request.args.get('product')).first()
-    return render_template('single.html', product=product)
+    reviews = Review.query.filter_by(product_id=request.args.get('product')).all()
+    all_stars, count = [review.stars for review in reviews], len([review.stars for review in reviews])
+    for star in all_stars:
+        star_sum += star
+    if star_sum < 1:
+        final_star_rating = 1
+    else:
+        final_star_rating = round((star_sum/count))
+    return render_template('single.html', product=product, reviews=reviews, star=final_star_rating)
 
 
 @application.route("/main_page", methods=['GET'])
