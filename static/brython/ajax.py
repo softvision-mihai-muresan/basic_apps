@@ -16,6 +16,15 @@ def bind_register_link(ev=None):
     except: pass
 
 
+def bind_register_footer_link(ev=None):
+    try:
+        document['footer_signup'].unbind('click', register_link_click)
+    except: pass
+    try:
+        document['footer_signup'].bind('click', register_link_click)
+    except: pass
+
+
 def bind_register_button(ev):
     try:
         document['register_btn'].unbind('click', register_button_click)
@@ -43,21 +52,42 @@ def bind_logout_button(ev=None):
     except: pass
 
 
-def bind_single_product_link(ev, number):
+def bind_single_product_link(ev, product):
     try:
-        document["single_page_product_{}".format(number)].unbind('click', products_id_click)
+        product.unbind('click', products_id_click)
     except: pass
     try:
-        document["single_page_product_{}".format(number)].bind('click', products_id_click)
+        product.bind('click', products_id_click)
+    except: pass
+
+
+def bind_404_link(ev, link):
+    try:
+        link.unbind('click', link_404_click)
+    except: pass
+    try:
+        link.bind('click', link_404_click)
+    except: pass
+
+
+def bind_500_link(ev, link):
+    try:
+        link.unbind('click', link_500_click)
+    except: pass
+    try:
+        link.bind('click', link_500_click)
     except: pass
 
 
 def bind_my_acc_button(ev):
     try:
-        document['myacc'].unbind('click', account_click)
+
+        for element in document.get(selector="li[id*='myacc_'"):
+            element.unbind('click', account_click)
     except: pass
     try:
-        document['myacc'].bind('click', account_click)
+        for element in document.get(selector="li[id*='myacc_'"):
+            element.bind('click', account_click)
     except: pass
 
 
@@ -91,10 +121,18 @@ def reload_page(ev):
     window.location.reload()
 
 
+def is_login_error_message_visible(ev):
+    if len(document.get(selector="span[id='invalid_acc'")) > 0:
+        bind_login_button(ev)
+        return True
+    else:
+        reload_page(ev)
+
+
 def post_data(url, qs, callbacks=None):
     req = ajax.ajax()
     # Bind the complete State to the on_post_complete function
-    req.bind('complete', lambda req:on_get_complete(req, callbacks))
+    req.bind('complete', lambda req:on_post_complete(req, callbacks))
     # send a POST request to the url
     req.open('POST', url, True)
     req.set_header('content-type', 'application/x-www-form-urlencoded')
@@ -131,9 +169,24 @@ def on_get_complete(req, callbacks=None):
                 callback(req)
         bind_my_acc_button(req)
         bind_register_link(req)
+        bind_register_footer_link(req)
         bind_register_button(req)
-        for i in range(9):
-            bind_single_product_link(req, i)
+        try:
+            for product in document['all_products'].get(selector="a[id*='single_page_product_'"):
+                bind_single_product_link(req, product)
+        except KeyError: pass
+        # try:
+        #     for link in document['main_wrapper'].get(selector="li[class*='go_to_404'"):
+        #         bind_404_link(req, link)
+        # except KeyError: pass
+        # try:
+        #     for link in document['main_wrapper'].get(selector="a[class*='go_to_404'"):
+        #         bind_404_link(req, link)
+        # except KeyError: pass
+        # try:
+        #     for link in document['main_wrapper'].get(selector="a[class*='page_500'"):
+        #         bind_500_link(req, link)
+        # except KeyError: pass
         # bind_all_header_footer_links(req)
         bind_logout_button(req)
     else:
@@ -153,7 +206,16 @@ def products_link_click(ev):
 
 
 def products_id_click(ev):
-    get_data("/single_product", qs)
+    id = (ev.currentTarget.id).split("_")[3]
+    get_data("/single_product", "product={}".format(id))
+
+
+def link_404_click(ev):
+    get_data("/page_404", qs)
+
+
+def link_500_click(ev):
+    get_data("/page_500", qs)
 
 
 def register_button_click(ev):
@@ -161,22 +223,21 @@ def register_button_click(ev):
     _lastName = document['inputLastName'].value
     _email = document['inputEmail'].value
     _password = document['inputPassword'].value
+    callback = [bind_login_button]
     qs = {'inputFirstName': _firstName,
           'inputLastName': _lastName,
           'inputEmail': _email,
           'inputPassword': _password}
-    post_data("/register_action", qs)
+    post_data("/register_action", qs, callback)
 
 
 def login_button_click(ev):
-    reload = [reload_page, bind_logout_button, bind_my_acc_button]
-
     _email = document['login_email'].value
     _password = document['login_password'].value
+    callback = [is_login_error_message_visible, bind_logout_button, bind_my_acc_button]
     qs = {'login_email': _email,
           'login_password': _password}
-
-    post_data("/login_action", qs, reload)
+    post_data("/login_action", qs, callback)
 
 
 def logout_click(ev):
@@ -194,16 +255,17 @@ def register_link_click(ev):
     get_data("/register", qs, callbacks)
 
 try:
-    document['myacc'].bind('click', account_click)
+    for element in document.get(selector="li[id*='myacc_'"):
+        element.bind('click', account_click)
 except: pass
-try:
-    document['myacc2'].bind('click', account_click)
-except: pass
+
 
 bind_register_link()
 bind_logout_button()
 document['contact_link'].bind('click', contact_link_click)
 document['logo_link'].bind('click', logo_link_click)
+
+document['footer_signup'].bind('click', register_link_click)
 
 document['header_running_link'].bind('click', products_link_click)
 document['header_fitness_link'].bind('click', products_link_click)
@@ -220,3 +282,12 @@ document['footer_more_sports_link'].bind('click', products_link_click)
 document['footer_style_link'].bind('click', products_link_click)
 document['footer_special_link'].bind('click', products_link_click)
 document['footer_brand_events_link'].bind('click', products_link_click)
+
+# for link in document['main_wrapper'].get(selector="li[class*='go_to_404'"):
+#     link.bind('click', link_404_click)
+#
+# for link in document['main_wrapper'].get(selector="a[class*='go_to_404'"):
+#     link.bind('click', link_404_click)
+#
+# for link in document['main_wrapper'].get(selector="a[class*='page_500'"):
+#     link.bind('click', link_500_click)

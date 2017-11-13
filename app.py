@@ -18,13 +18,24 @@ def before_request():
 
 
 @login_manager.user_loader
-def load_user(id):
+def load_user(id: int):
     return User.query.get(int(id))
 
 
 @application.errorhandler(404)
 def page_not_found(e):
     return render_template('WIP.html'), 404
+
+
+@application.route("/page_404", methods=['GET'])
+def page_not_found():
+    return render_template('WIP.html')
+
+
+@application.route("/page_500", methods=['GET'])
+def page_500():
+    deamoaca
+    return render_template('WIP.html')
 
 
 @application.route("/index")
@@ -47,13 +58,15 @@ def contact():
 
 @application.route("/products_page", methods=['GET'])
 def products_pg():
+    items = request.args.get('tags')
     products = Product.query.all()
     return render_template('product.html', products=products)
 
 
 @application.route("/single_product", methods=['GET'])
 def single_product_pg():
-    return render_template('single.html')
+    product = Product.query.filter_by(product_id=request.args.get('product')).first()
+    return render_template('single.html', product=product)
 
 
 @application.route("/main_page", methods=['GET'])
