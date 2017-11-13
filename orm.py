@@ -95,7 +95,32 @@ class Cart(db.Model):
         self.quantity = quantity
 
     def __repr__(self):
-        return '<Cart: {}>'.format(self.name)
+        return '<Cart: {}>'.format(self.cart_id)
+
+
+class Review(db.Model):
+    """
+    Create a products table
+    """
+
+    __tablename__ = 'reviews'
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
+    product_id = db.Column(db.Integer, db.ForeignKey('products.user_id'))
+    stars = db.Column(db.Integer)
+    review = db.Column(db.Text)
+
+    user = db.relationship('User', backref=db.backref('reviews', lazy=True))
+
+    def __init__(self, user_id, product_id, stars, review):
+        self.user_id = user_id
+        self.product_id = product_id
+        self.stars = stars
+        self.review = review
+
+    def __repr__(self):
+        return '<Review: {}>'.format(self.review)
 
 db.create_all()
 login_manager.init_app(application)
