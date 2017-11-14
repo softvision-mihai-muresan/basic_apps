@@ -108,6 +108,32 @@ def register():
         return render_template('account.html')
 
 
+@application.route("/post_review_action", methods=['POST'])
+def post_review():
+    # read the posted values from the UI
+    _stars = request.form.get('stars')
+    _review = request.form.get('post_area')
+    _prod_id = request.form.get('prod_id')
+    _user_id = request.form.get('user_id')
+
+    # validate the received values
+    review = Review(_user_id, _prod_id, _stars, _review)
+
+    db.session.add(review)
+    db.session.commit()
+    star_sum = 0
+    product = Product.query.filter_by(product_id=_prod_id).first()
+    reviews = Review.query.filter_by(product_id=_prod_id).all()
+    all_stars, count = [review.stars for review in reviews], len([review.stars for review in reviews])
+    for star in all_stars:
+        star_sum += star
+    if star_sum < 1:
+        final_star_rating = 1
+    else:
+        final_star_rating = round((star_sum / count))
+    return render_template('single.html', product=product, reviews=reviews, star=final_star_rating)
+
+
 @application.route("/login_action", methods=['POST'])
 def login():
     # read the posted values from the UI
