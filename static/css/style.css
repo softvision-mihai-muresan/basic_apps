@@ -735,7 +735,7 @@ b.plus-on {
 	resize:none;
 	height:60px;		
 }
-.account-top input[type="submit"],.register-top input[type="submit"], #register_btn, #login_btn{
+.account-top input[type="submit"],.register-top input[type="submit"], #register_btn, #login_btn, #post_review{
 	outline:none;
 	padding:7px 20px;
 	color:#FFF;
@@ -751,6 +751,8 @@ b.plus-on {
 	-ms-transition: 0.5s all;	
 	font-size: 1.2em;
 }
+
+
 .account-top input[type="submit"]:hover,.register-top input[type="submit"]:hover{
 	background:#0087d5;
 }

@@ -79,15 +79,25 @@
 			<br />
 			{% endfor %}
 			<!--<div class="col-md-6 contact-grid">-->
+			{% if g.user.is_authenticated %}
 				<form>
 					<div>
-						<textarea id="area" placeholder="Post a review here" style="resize: none; height:100px; width:100%;"></textarea>
+						<input id="pppuid" value="{{ product.product_id }}-{{ g.user.user_id }}" style="display:none">
+						<select class="in-drop" name="stars" id="star_input">
+							<option value="1" class="in-of">1 Star</option>
+							<option value="2" class="in-of">2 Stars</option>
+							<option value="3" class="in-of">3 Stars</option>
+							<option value="4" class="in-of">4 Stars</option>
+							<option value="5" class="in-of">5 Stars</option>
+						</select>
+						<textarea name="post_area" id="area" placeholder="Post a review here" style="resize: none; height:100px; width:100%;"></textarea>
 					</div>
 					<br />
 					<div class="send-in">
-						<input type="submit" value="Post" >
+						<input id="post_review" value="Post" readonly style="width:100%;height:40px;">
 					</div>
 				</form>
+			{% endif %}
 			<!--</div>-->
 		</div>
 	<div class="clearfix"> </div>

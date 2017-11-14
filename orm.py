@@ -107,7 +107,7 @@ class Review(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
-    product_id = db.Column(db.Integer, db.ForeignKey('products.user_id'))
+    product_id = db.Column(db.Integer)
     stars = db.Column(db.Integer)
     review = db.Column(db.Text)
 
