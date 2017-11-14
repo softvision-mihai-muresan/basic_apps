@@ -752,7 +752,6 @@ b.plus-on {
 	font-size: 1.2em;
 }
 
-
 .account-top input[type="submit"]:hover,.register-top input[type="submit"]:hover{
 	background:#0087d5;
 }
@@ -861,7 +860,7 @@ a.create:hover{
 	resize:none;
 	height:150px;
 }
-.send-in input[type="submit"]{
+.send-in input[type="submit"], #register_btn, #login_btn, #post_review{
 	width: 100%;
 	font-size: 1.5em;
 	background: #d2232a;
@@ -872,7 +871,7 @@ a.create:hover{
 	outline:none;
 	-webkit-appearance: none;
 }
-.send-in input[type="submit"]:hover{
+.send-in input[type="submit"]:hover, #register_btn:hover, #login_btn:hover, #post_review:hover{
 	background:#0087d5;
 }
 .contact-form {
