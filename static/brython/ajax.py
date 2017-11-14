@@ -34,6 +34,15 @@ def bind_register_button(ev):
     except: pass
 
 
+def bind_post_review_button(ev=None):
+    try:
+        document['post_review'].unbind('click', review_button_click)
+    except: pass
+    try:
+        document['post_review'].bind('click', review_button_click)
+    except: pass
+
+
 def bind_login_button(ev):
     try:
         document['login_btn'].unbind('click', login_button_click)
@@ -171,6 +180,7 @@ def on_get_complete(req, callbacks=None):
         bind_register_link(req)
         bind_register_footer_link(req)
         bind_register_button(req)
+        bind_post_review_button(req)
         try:
             for product in document['all_products'].get(selector="a[id*='single_page_product_'"):
                 bind_single_product_link(req, product)
@@ -229,6 +239,19 @@ def register_button_click(ev):
           'inputEmail': _email,
           'inputPassword': _password}
     post_data("/register_action", qs, callback)
+
+
+def review_button_click(ev):
+    _stars = document['star_input'].value
+    _post = document['area'].value
+    _prod_id = document['pppuid'].value.split("-")[0]
+    _user_id = document['pppuid'].value.split("-")[1]
+    callback = [bind_post_review_button]
+    qs = {'stars': _stars,
+          'post_area': _post,
+          'prod_id': _prod_id,
+          'user_id': _user_id}
+    post_data("/post_review_action", qs, callback)
 
 
 def login_button_click(ev):
