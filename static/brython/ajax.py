@@ -247,6 +247,8 @@ def review_button_click(ev):
     _prod_id = document['pppuid'].value.split("-")[0]
     _user_id = document['pppuid'].value.split("-")[1]
     callback = [bind_post_review_button]
+    if len(_post) < 1:
+        return
     qs = {'stars': _stars,
           'post_area': _post,
           'prod_id': _prod_id,
