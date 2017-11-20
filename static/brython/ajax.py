@@ -208,7 +208,8 @@ def contact_link_click(ev):
 
 
 def logo_link_click(ev):
-    get_data("/main_page", qs)
+    callback = [reload_page]
+    get_data("/main_page", qs, callback)
 
 
 def products_link_click(ev):
@@ -233,7 +234,7 @@ def register_button_click(ev):
     _lastName = document['inputLastName'].value
     _email = document['inputEmail'].value
     _password = document['inputPassword'].value
-    callback = [bind_login_button]
+    callback = [bind_login_button, bind_register_button]
     qs = {'inputFirstName': _firstName,
           'inputLastName': _lastName,
           'inputEmail': _email,

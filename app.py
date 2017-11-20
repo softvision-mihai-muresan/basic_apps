@@ -98,7 +98,11 @@ def register():
 
     # validate the received values
     if not _email and not _password:
-        return json.dumps({'html': '<span>Enter the required fields</span>'})
+        flash('Enter the required fields')
+        return render_template('register.html')
+    elif len(User.query.filter_by(email=_email).all()) > 0:
+        flash('Email already taken', 'error')
+        return render_template('register.html')
     else:
         user = User(_fname, _lname, _email, _password)
 
