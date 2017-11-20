@@ -81,6 +81,13 @@
 			{% endfor %}
 			<!--<div class="col-md-6 contact-grid">-->
 			{% if g.user.is_authenticated %}
+			{% with messages = get_flashed_messages() %}
+				 {% if messages %}
+					 {% for message in messages %}
+					 <span id="invalid_review" style="color: red">{{ message }}</span>
+					 {% endfor %}
+				 {% endif %}
+			{% endwith %}
 				<form>
 					<div>
 						<input id="pppuid" value="{{ product.product_id }}-{{ g.user.user_id }}" style="display:none">
