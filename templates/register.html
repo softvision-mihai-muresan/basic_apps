@@ -3,6 +3,13 @@
 		<div class="register">
 		<h2>REGISTER</h2>		
 		<div class=" register-top">
+			{% with messages = get_flashed_messages() %}
+					 {% if messages %}
+						     {% for message in messages %}
+						     <span id="invalid_acc" style="color: red">{{ message }}</span>
+						     {% endfor %}
+					 {% endif %}
+				{% endwith %}
 			<form>
 				<div> 	
 				<span>First Name</span>
@@ -20,7 +27,7 @@
 				<span >Password</span>
 				<input id="inputPassword" name="inputPassword" type="password">
 			</div>				
-				<input id="register_btn" value="Submit" style="width:60%">
+				<input id="register_btn" value="Submit" readonly style="width:60%">
 			</form>
 		</div>		
 	</div>
