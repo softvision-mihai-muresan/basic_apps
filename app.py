@@ -120,11 +120,13 @@ def post_review():
     _prod_id = request.form.get('prod_id')
     _user_id = request.form.get('user_id')
 
-    # validate the received values
-    review = Review(_user_id, _prod_id, _stars, _review)
-
-    db.session.add(review)
-    db.session.commit()
+    if len(_review.strip()) > 0:
+        # validate the received values
+        review = Review(_user_id, _prod_id, _stars, _review)
+        db.session.add(review)
+        db.session.commit()
+    else:
+        flash('Review must not be empty', 'error')
     star_sum = 0
     product = Product.query.filter_by(product_id=_prod_id).first()
     reviews = Review.query.filter_by(product_id=_prod_id).all()
@@ -136,6 +138,7 @@ def post_review():
     else:
         final_star_rating = round((star_sum / count))
     return render_template('single.html', product=product, reviews=reviews, star=final_star_rating)
+
 
 
 @application.route("/login_action", methods=['POST'])
