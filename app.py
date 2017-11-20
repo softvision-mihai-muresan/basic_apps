@@ -140,7 +140,6 @@ def post_review():
     return render_template('single.html', product=product, reviews=reviews, star=final_star_rating)
 
 
-
 @application.route("/login_action", methods=['POST'])
 def login():
     # read the posted values from the UI
