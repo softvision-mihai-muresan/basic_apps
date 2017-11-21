@@ -125,6 +125,13 @@ def bind_all_header_footer_links(ev):
             element
         except: pass
 
+def bind_product_link_hardcoded(ev, product):
+    try:
+        product.unbind('click', products_hardcoded_id_click)
+    except: pass
+    try:
+        product.bind('click', products_hardcoded_id_click)
+    except: pass
 
 def reload_page(ev):
     window.location.reload()
@@ -193,6 +200,10 @@ def on_get_complete(req, callbacks=None):
             for link in document['main_wrapper'].get(selector="*[class*='page_500'"):
                 bind_500_link(req, link)
         except KeyError: pass
+        try:
+            for product in document['main_wrapper'].get(selector="*[class*='article'"):
+                bind_product_link_hardcoded(req, product)
+        except KeyError: pass
         bind_all_header_footer_links(req)
         bind_logout_button(req)
     else:
@@ -216,6 +227,9 @@ def products_id_click(ev):
     id = (ev.currentTarget.id).split("_")[3]
     get_data("/single_product", "product={}".format(id))
 
+def products_hardcoded_id_click(ev):
+    id = 1
+    get_data("/single_product", "product={}".format(id))
 
 def link_404_click(ev):
     get_data("/page_404", qs)
@@ -310,6 +324,10 @@ for link in document['main_wrapper'].get(selector="*[class*='go_to_404'"):
 
 for link in document['main_wrapper'].get(selector="a[class*='go_to_shop'"):
     link.bind('click', products_link_click)
+
+for product in document['main_wrapper'].get(selector="*[class*='article'"):
+    product.bind('click', products_hardcoded_id_click)
+
 
 for link in document['main_wrapper'].get(selector="a[class*='page_500'"):
     link.bind('click', link_500_click)
