@@ -185,19 +185,19 @@ def on_get_complete(req, callbacks=None):
             for product in document['all_products'].get(selector="a[id*='single_page_product_'"):
                 bind_single_product_link(req, product)
         except KeyError: pass
-        # try:
-        #     for link in document['main_wrapper'].get(selector="li[class*='go_to_404'"):
-        #         bind_404_link(req, link)
-        # except KeyError: pass
-        # try:
-        #     for link in document['main_wrapper'].get(selector="a[class*='go_to_404'"):
-        #         bind_404_link(req, link)
-        # except KeyError: pass
+        try:
+            for link in document['main_wrapper'].get(selector="li[class*='go_to_404'"):
+                bind_404_link(req, link)
+        except KeyError: pass
+        try:
+            for link in document['main_wrapper'].get(selector="a[class*='go_to_404'"):
+                bind_404_link(req, link)
+        except KeyError: pass
         # try:
         #     for link in document['main_wrapper'].get(selector="a[class*='page_500'"):
         #         bind_500_link(req, link)
         # except KeyError: pass
-        # bind_all_header_footer_links(req)
+        bind_all_header_footer_links(req)
         bind_logout_button(req)
     else:
         document["main_area"].html = "error " + req.text
@@ -309,11 +309,14 @@ document['footer_style_link'].bind('click', products_link_click)
 document['footer_special_link'].bind('click', products_link_click)
 document['footer_brand_events_link'].bind('click', products_link_click)
 
-# for link in document['main_wrapper'].get(selector="li[class*='go_to_404'"):
-#     link.bind('click', link_404_click)
-#
-# for link in document['main_wrapper'].get(selector="a[class*='go_to_404'"):
-#     link.bind('click', link_404_click)
-#
+for link in document['main_wrapper'].get(selector="li[class*='go_to_404'"):
+    link.bind('click', link_404_click)
+
+for link in document['main_wrapper'].get(selector="a[class*='go_to_404'"):
+    link.bind('click', link_404_click)
+
+for link in document['main_wrapper'].get(selector="a[class*='go_to_shop'"):
+    link.bind('click', products_link_click)
+
 # for link in document['main_wrapper'].get(selector="a[class*='page_500'"):
 #     link.bind('click', link_500_click)
