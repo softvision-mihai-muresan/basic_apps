@@ -1818,3 +1818,8 @@ a.create {
   width: 61%;
 }
 }
+#imij img {
+	margin-left: auto;
+	margin-right: auto;
+	display: block;
+}
