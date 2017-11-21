@@ -126,38 +126,18 @@
 			<!--//sreen-gallery-cursual---->
 		<div class="content-grids">
 
+		{% for product in products %}
 		<div class="col-md-4 content-grid">
-			<a href="javascript:;" class="lot"><img class="img-responsive " src="{{ url_for('static', filename='images/sh.png') }}" alt=""></a>
+			<a href="javascript:;" class="lot"><img class="img-responsive go_to_404" src="{{ url_for('static', filename='images/'+product.product_image) }}" alt=""></a>
 			<div class="shoe">
-				<p>Nike 3.0 V4 Men Grey Royal
-				Blue with White</p>
-				<label>$67.99</label>
-				<a class="go_to_404" href="javascript:;">find a store</a>
+				<p>{{product.product_name }}</p>
+				<label>{{ product.product_price}}</label>
+				<a class="go_to_404" href="javascript:;">Go To Product</a>
 			</div>
 			<div class="clearfix"> </div>
 			<b class="plus-in">+</b>
 		</div>
-		<div class="col-md-4 content-grid">
-			<a href="javascript:;" class="lot"><img class="img-responsive " src="{{ url_for('static', filename='images/sh1.png') }}" alt=""></a>
-			<div class="shoe">
-				<p>Nike 3.0 V4 Men Grey RoyalBlue with White</p>
-				<label>$67.99</label>
-				<a class="go_to_404" href="javascript:;">find a store</a>
-			</div>
-			<div class="clearfix"> </div>
-			<b class="plus-in">+</b>
-		</div>
-		<div class="col-md-4 content-grid">
-			<a href="javascript:;" class="lot"><img class="img-responsive " src="{{ url_for('static', filename='images/sh2.png') }}" alt=""></a>
-			<div class="shoe">
-				<p>Nike 3.0 V4 Men Grey RoyalBlue with White</p>
-				<label>$67.99</label>
-				<a class="go_to_404" href="javascript:;">find a store</a>
-			</div>
-
-			<div class="clearfix"> </div>
-			<b class="plus-in">+</b>
-		</div>
+		{% endfor %}
 
 		<div class="clearfix"> </div>
 		</div>

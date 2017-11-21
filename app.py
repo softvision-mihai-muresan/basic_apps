@@ -41,9 +41,10 @@ def page_500():
 @application.route("/index")
 @application.route("/")
 def index():
+    products = Product.query.limit(3).all()
     if g.user.is_authenticated:
-        return render_template('index.html', user_name=g.user.last_name)
-    return render_template('index.html')
+        return render_template('index.html', user_name=g.user.last_name, products=products)
+    return render_template('index.html', products=products)
 
 
 @application.route("/account", methods=['GET'])
