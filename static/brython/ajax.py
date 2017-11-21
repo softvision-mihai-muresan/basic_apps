@@ -311,5 +311,5 @@ for link in document['main_wrapper'].get(selector="*[class*='go_to_404'"):
 for link in document['main_wrapper'].get(selector="a[class*='go_to_shop'"):
     link.bind('click', products_link_click)
 
-# for link in document['main_wrapper'].get(selector="a[class*='page_500'"):
-#     link.bind('click', link_500_click)
+for link in document['main_wrapper'].get(selector="a[class*='page_500'"):
+    link.bind('click', link_500_click)
