@@ -7,6 +7,14 @@ qs = ''
 url = ''
 
 
+def bind_payment_link(ev=None):
+    try:
+        document['payment_link'].unbind('click', payment_link_click)
+    except: pass
+    try:
+        document['payment_link'].bind('click', payment_link_click)
+    except: pass
+
 def bind_register_link(ev=None):
     try:
         document['header_register'].unbind('click', register_link_click)
@@ -114,7 +122,8 @@ def bind_all_header_footer_links(ev):
     elements.append(document['header_football_link'].bind('click', products_link_click))
     elements.append(document['header_golf_link'].bind('click', products_link_click))
 
-    elements.append(document['footer_running_link'].bind('click', products_link_click))
+    elements.append(document['footer_running_link'].bind('click', cart_links_click))
+    #elements.append(document['footer_running_link'].bind('click', products_link_click))
     elements.append(document['footer_cycling_link'].bind('click', products_link_click))
     elements.append(document['footer_triathlon_link'].bind('click', products_link_click))
     elements.append(document['footer_fitness_link'].bind('click', products_link_click))
@@ -159,6 +168,16 @@ def post_data(url, qs, callbacks=None):
     req.send(qs)
 
 
+def put_data(url, qs, callbacks=None):
+    req = ajax.ajax()
+    # Bind the complete State to the on_post_complete function
+    req.bind('complete', lambda req:on_put_complete(req, callbacks))
+    # send a POST request to the url
+    req.open('PUT', url, True)
+    req.set_header('content-type', 'application/x-www-form-urlencoded')
+    # send data as a dictionary
+    req.send(qs)
+
 def get_data(url, qs, callbacks=None):
     req = ajax.ajax()
     req.bind('complete', lambda req:on_get_complete(req, callbacks))
@@ -175,9 +194,25 @@ def on_post_complete(req, callbacks=None):
         if callbacks is not None:
             for callback in callbacks:
                 callback(req)
+        try:
+            for product in document['cart_item_list'].get(selector="input[id*='quantity_of_product_'"):
+                bind_update_quantities(req, product)
+        except KeyError:
+            pass
+        bind_payment_link(req)
     else:
         document["main_area"].html = "error " + req.text
 
+
+def on_put_complete(req, callbacks=None):
+    if req.status == 200 or req.status == 0:
+        #  Take our response and inject it into the html div with id='main'
+        document["main_area"].html = req.text
+        if callbacks is not None:
+            for callback in callbacks:
+                callback(req)
+    else:
+        document["main_area"].html = "error " + req.text
 
 def on_get_complete(req, callbacks=None):
     if req.status == 200 or req.status == 0:
@@ -191,6 +226,7 @@ def on_get_complete(req, callbacks=None):
         bind_register_footer_link(req)
         bind_register_button(req)
         bind_post_review_button(req)
+        bind_payment_link(req)
         try:
             for product in document['all_products'].get(selector="a[id*='single_page_product_'"):
                 bind_single_product_link(req, product)
@@ -207,11 +243,47 @@ def on_get_complete(req, callbacks=None):
             for product in document['main_wrapper'].get(selector="*[class*='article'"):
                 bind_product_link_hardcoded(req, product)
         except KeyError: pass
+        try:
+            for product in document['cart_item_list'].get(selector="input[id*='quantity_of_product_'"):
+                bind_update_quantities(req, product)
+        except KeyError:
+            pass
+        try:
+            for product in document['cart_item_list'].get(selector="input[id*='remove_cart_item_'"):
+                bind_remove_cart_item_button(req, product)
+        except KeyError:
+            pass
+
         bind_all_header_footer_links(req)
         bind_logout_button(req)
     else:
         document["main_area"].html = "error " + req.text
 
+
+
+def bind_update_quantities(ev, product):
+    try:
+        product.unbind('change', update_quantity_input)
+    except:
+        pass
+
+    try:
+        product.bind('change', update_quantity_input)
+    except:
+        pass
+
+
+def bind_remove_cart_item_button(ev, product):
+    try:
+        product.unbind('click', remove_cart_item)
+    except:
+        pass
+
+    try:
+        product.bind('click', remove_cart_item)
+    except:
+        pass
+    
 
 def contact_link_click(ev):
     get_data("/contact", qs)
@@ -222,11 +294,16 @@ def logo_link_click(ev):
     get_data("/main_page", qs, callback)
 
 
+
 def products_link_click(ev):
     get_data("/products_page", qs)
 
 
 def products_id_click(ev):
+    id = (ev.currentTarget.id).split("_")[3]
+    get_data("/single_product", "product={}".format(id))
+
+def product_quantity(ev):
     id = (ev.currentTarget.id).split("_")[3]
     get_data("/single_product", "product={}".format(id))
 
@@ -253,6 +330,21 @@ def register_button_click(ev):
           'inputEmail': _email,
           'inputPassword': _password}
     post_data("/register_action", qs, callback)
+
+
+def update_quantity_input(ev):
+    cart_id = 'hidden_cart_id_input_' + (ev.currentTarget.id).split("_")[3]
+    quantity_input = ev.currentTarget.value
+    _cart_id = document[cart_id].value
+    qs = {'cartID': _cart_id,
+          'quantity_input': quantity_input}
+    post_data("/update_quantity_action", qs)
+
+
+def remove_cart_item(ev):
+    cart_id =(ev.currentTarget.id).split("_")[3]
+    qs = {'cartID': cart_id}
+    post_data("/remove_cart_item_action", qs)
 
 
 def review_button_click(ev):
@@ -288,6 +380,8 @@ def account_click(ev):
     callbacks = [bind_register_link, bind_login_button]
     get_data("/account", qs, callbacks)
 
+def payment_link_click(ev):
+    get_data("/payment", qs)
 
 def register_link_click(ev):
     callbacks = [bind_register_button]
@@ -303,7 +397,6 @@ bind_register_link()
 bind_logout_button()
 document['contact_link'].bind('click', contact_link_click)
 document['logo_link'].bind('click', logo_link_click)
-
 document['footer_signup'].bind('click', register_link_click)
 
 document['header_running_link'].bind('click', products_link_click)

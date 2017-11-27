@@ -141,6 +141,7 @@ def post_review():
     return render_template('single.html', product=product, reviews=reviews, star=final_star_rating)
 
 
+
 @application.route("/login_action", methods=['POST'])
 def login():
     # read the posted values from the UI
@@ -167,26 +168,43 @@ def logout():
 
 @application.route("/cart", methods=['GET'])
 def cart_pg():
-    cart_table = Cart
-    product_table = Product
     user_id = User.query.filter_by(email=g.user.email).first().user_id
-    return render_template('cart.html', cart_table=cart_table, product_table=product_table, userid=user_id)
+    cart_items = Cart.query.filter_by(user_id=user_id).all()
+    total_price = 0
+    for item in cart_items:
+        total_price += (item.product.product_price * float(item.quantity))
+    return render_template('cart.html', cart_items=cart_items, total_price=total_price)
 
 
-@application.route("/cart", methods=['GET', 'POST'])
-def remove_cart_item():
+@application.route("/remove_cart_item_action", methods=['POST'])
+def remove_cart_item_action():
+    user_id = User.query.filter_by(email=g.user.email).first().user_id
+    cart_items = Cart.query.filter_by(user_id=user_id).all()
     cart_row = Cart.query.filter_by(cart_id=[request.form['cartID']]).one()
+    total_price = 0
+    for item in cart_items:
+        total_price += (item.product.product_price * float(item.quantity))
     db.session.delete(cart_row)
     db.session.commit()
-    cart_table = Cart
-    product_table = Product
-    user_id = User.query.filter_by(email=g.user.email).first().user_id
-    return render_template('cart.html', cart_table=cart_table, product_table=product_table, userid=user_id)
+    from time import sleep
+    sleep(3)
+    return render_template('cart.html', cart_items=cart_items, total_price=total_price)
 
-@application.route("/cart", methods=['GET', 'PUT'])
-def update_product_quantity():
-    pass
-    return render_template('cart.html', cart_table=cart_table, product_table=product_table, userid=user_id)
+@application.route("/update_quantity_action", methods=['POST'])
+def update_quantity_action():
+    user_id = User.query.filter_by(email=g.user.email).first().user_id
+    cart_items = Cart.query.filter_by(user_id=user_id).all()
+    cart_row = Cart.query.filter_by(cart_id=[request.form['cartID']]).one()
+    cart_row.quantity = request.form['quantity_input']
+    total_price = 0
+    for item in cart_items:
+        total_price += (item.product.product_price * float(item.quantity))
+    db.session.commit()
+    return render_template('cart.html', cart_items=cart_items, total_price=total_price)
+
+@application.route("/payment", methods=['GET'])
+def payment_pg():
+    return render_template('payment.html')
 
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))

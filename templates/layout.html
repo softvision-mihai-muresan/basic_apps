@@ -11,8 +11,10 @@
     <title>Sport A Ecommerce Category Flat Bootstarp Resposive Website Template | Home :: w3layouts</title>
     <link href="{{ url_for('static', filename='css/bootstrap.css') }}" rel="stylesheet" type="text/css" media="all" />
       <link href="{{ url_for('static', filename='css/etalage.css') }}" rel="stylesheet" type="text/css" media="all" />
+
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+
     <!-- Custom Theme files -->
     <!--theme-style-->
     <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" type="text/css" media="all" />
@@ -147,8 +149,11 @@
     {% include "footer.html" %}
         <!--Brython files-->
     <script type="text/javascript" src="{{ url_for('static', filename='brython/brython.js') }}"></script>
+
       <script type="text/javascript" src="{{ url_for('static', filename='brython/brython_stdlib.js') }}"></script>
     <script type="text/python" src="{{ url_for('static', filename='brython/ajax.py') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/payment.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.payform.min.js') }}"></script>
     </div>
   </body>
 </html>
