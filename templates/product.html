@@ -11,8 +11,11 @@
 						<label>${{ product.product_price }}</label>
 						<!--<a href="javascript:;" class="store">BUY</a>-->
 					</div>
-
-					<b class="plus-on">+</b>
+					{% if g.user.is_authenticated %}
+					<form  method="POST">
+						<b id="product_plus_{{ product.product_id }}" class="plus-on"><a style="text-decoration: none; cursor: pointer;">+</a></b>
+					</form>
+					{% endif %}
 				</div>
 			</div>
 			{% endfor %}
