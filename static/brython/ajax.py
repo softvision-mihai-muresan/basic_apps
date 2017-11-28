@@ -111,6 +111,7 @@ def bind_my_acc_button(ev):
 def cart_links_click(ev):
     get_data("/cart", qs)
 
+
 def bind_all_header_footer_links(ev):
     elements = []
     elements.append(document['contact_link'].bind('click', contact_link_click))
@@ -122,8 +123,8 @@ def bind_all_header_footer_links(ev):
     elements.append(document['header_football_link'].bind('click', products_link_click))
     elements.append(document['header_golf_link'].bind('click', products_link_click))
 
-    elements.append(document['footer_running_link'].bind('click', cart_links_click))
-    #elements.append(document['footer_running_link'].bind('click', products_link_click))
+    # elements.append(document['footer_running_link'].bind('click', cart_links_click))
+    elements.append(document['footer_running_link'].bind('click', products_link_click))
     elements.append(document['footer_cycling_link'].bind('click', products_link_click))
     elements.append(document['footer_triathlon_link'].bind('click', products_link_click))
     elements.append(document['footer_fitness_link'].bind('click', products_link_click))
@@ -137,6 +138,49 @@ def bind_all_header_footer_links(ev):
             element
         except: pass
 
+
+def bind_all_multiple_items(ev):
+    try:
+        for product in document['all_products'].get(selector="a[id*='single_page_product_'"):
+            bind_single_product_link(ev, product)
+    except KeyError:
+        pass
+    try:
+        for link in document['main_wrapper'].get(selector="*[class*='go_to_404'"):
+            bind_404_link(ev, link)
+    except KeyError:
+        pass
+    try:
+        for link in document['main_wrapper'].get(selector="*[class*='page_500'"):
+            bind_500_link(ev, link)
+    except KeyError:
+        pass
+    try:
+        for product in document['main_wrapper'].get(selector="*[class*='article'"):
+            bind_product_link_hardcoded(ev, product)
+    except KeyError:
+        pass
+    try:
+        for product in document['cart_item_list'].get(selector="input[id*='quantity_of_product_'"):
+            bind_update_quantities(ev, product)
+    except KeyError:
+        pass
+    try:
+        for product in document['cart_item_list'].get(selector="input[id*='remove_cart_item_'"):
+            bind_remove_cart_item_button(ev, product)
+    except KeyError:
+        pass
+    bind_all_multiple_items_on_post(ev)
+
+
+def bind_all_multiple_items_on_post(ev):
+    try:
+        for button in document['all_products'].get(selector="b[id*='product_plus_'"):
+            bind_product_plus_button(ev, button)
+    except KeyError:
+        pass
+
+
 def bind_product_link_hardcoded(ev, product):
     try:
         product.unbind('click', products_hardcoded_id_click)
@@ -144,121 +188,6 @@ def bind_product_link_hardcoded(ev, product):
     try:
         product.bind('click', products_hardcoded_id_click)
     except: pass
-
-def reload_page(ev):
-    window.location.reload()
-
-
-def is_login_error_message_visible(ev):
-    if len(document.get(selector="span[id='invalid_acc'")) > 0:
-        bind_login_button(ev)
-        return True
-    else:
-        reload_page(ev)
-
-
-def post_data(url, qs, callbacks=None):
-    req = ajax.ajax()
-    # Bind the complete State to the on_post_complete function
-    req.bind('complete', lambda req:on_post_complete(req, callbacks))
-    # send a POST request to the url
-    req.open('POST', url, True)
-    req.set_header('content-type', 'application/x-www-form-urlencoded')
-    # send data as a dictionary
-    req.send(qs)
-
-
-def put_data(url, qs, callbacks=None):
-    req = ajax.ajax()
-    # Bind the complete State to the on_post_complete function
-    req.bind('complete', lambda req:on_put_complete(req, callbacks))
-    # send a POST request to the url
-    req.open('PUT', url, True)
-    req.set_header('content-type', 'application/x-www-form-urlencoded')
-    # send data as a dictionary
-    req.send(qs)
-
-def get_data(url, qs, callbacks=None):
-    req = ajax.ajax()
-    req.bind('complete', lambda req:on_get_complete(req, callbacks))
-    # Bind the complete State to the on_get_complete function
-    req.open('GET', url+'?'+qs, True)
-    req.set_header('content-type', 'application/x-www-form-urlencoded')
-    req.send()
-
-
-def on_post_complete(req, callbacks=None):
-    if req.status == 200 or req.status == 0:
-        #  Take our response and inject it into the html div with id='main'
-        document["main_area"].html = req.text
-        if callbacks is not None:
-            for callback in callbacks:
-                callback(req)
-        try:
-            for product in document['cart_item_list'].get(selector="input[id*='quantity_of_product_'"):
-                bind_update_quantities(req, product)
-        except KeyError:
-            pass
-        bind_payment_link(req)
-    else:
-        document["main_area"].html = "error " + req.text
-
-
-def on_put_complete(req, callbacks=None):
-    if req.status == 200 or req.status == 0:
-        #  Take our response and inject it into the html div with id='main'
-        document["main_area"].html = req.text
-        if callbacks is not None:
-            for callback in callbacks:
-                callback(req)
-    else:
-        document["main_area"].html = "error " + req.text
-
-def on_get_complete(req, callbacks=None):
-    if req.status == 200 or req.status == 0:
-        #  Take our response and inject it into the html div with id='main'
-        document["main_area"].html = req.text
-        if callbacks is not None:
-            for callback in callbacks:
-                callback(req)
-        bind_my_acc_button(req)
-        bind_register_link(req)
-        bind_register_footer_link(req)
-        bind_register_button(req)
-        bind_post_review_button(req)
-        bind_payment_link(req)
-        try:
-            for product in document['all_products'].get(selector="a[id*='single_page_product_'"):
-                bind_single_product_link(req, product)
-        except KeyError: pass
-        try:
-            for link in document['main_wrapper'].get(selector="*[class*='go_to_404'"):
-                bind_404_link(req, link)
-        except KeyError: pass
-        try:
-            for link in document['main_wrapper'].get(selector="*[class*='page_500'"):
-                bind_500_link(req, link)
-        except KeyError: pass
-        try:
-            for product in document['main_wrapper'].get(selector="*[class*='article'"):
-                bind_product_link_hardcoded(req, product)
-        except KeyError: pass
-        try:
-            for product in document['cart_item_list'].get(selector="input[id*='quantity_of_product_'"):
-                bind_update_quantities(req, product)
-        except KeyError:
-            pass
-        try:
-            for product in document['cart_item_list'].get(selector="input[id*='remove_cart_item_'"):
-                bind_remove_cart_item_button(req, product)
-        except KeyError:
-            pass
-
-        bind_all_header_footer_links(req)
-        bind_logout_button(req)
-    else:
-        document["main_area"].html = "error " + req.text
-
 
 
 def bind_update_quantities(ev, product):
@@ -283,6 +212,88 @@ def bind_remove_cart_item_button(ev, product):
         product.bind('click', remove_cart_item)
     except:
         pass
+
+
+def bind_product_plus_button(ev, product_plus):
+    try:
+        product_plus.unbind('click', product_plus_button_click)
+    except:
+        pass
+
+    try:
+        product_plus.bind('click', product_plus_button_click)
+    except:
+        pass
+
+
+def reload_page(ev):
+    window.location.reload()
+
+
+def is_login_error_message_visible(ev):
+    if len(document.get(selector="span[id='invalid_acc'")) > 0:
+        bind_login_button(ev)
+        return True
+    else:
+        reload_page(ev)
+
+
+def post_data(url, qs, callbacks=None):
+    req = ajax.ajax()
+    # Bind the complete State to the on_post_complete function
+    req.bind('complete', lambda req:on_post_complete(req, callbacks))
+    # send a POST request to the url
+    req.open('POST', url, True)
+    req.set_header('content-type', 'application/x-www-form-urlencoded')
+    # send data as a dictionary
+    req.send(qs)
+
+
+def get_data(url, qs, callbacks=None):
+    req = ajax.ajax()
+    req.bind('complete', lambda req:on_get_complete(req, callbacks))
+    # Bind the complete State to the on_get_complete function
+    req.open('GET', url+'?'+qs, True)
+    req.set_header('content-type', 'application/x-www-form-urlencoded')
+    req.send()
+
+
+def on_post_complete(req, callbacks=None):
+    if req.status == 200 or req.status == 0:
+        #  Take our response and inject it into the html div with id='main'
+        document["main_area"].html = req.text
+        if callbacks is not None:
+            for callback in callbacks:
+                callback(req)
+        try:
+            for product in document['cart_item_list'].get(selector="input[id*='quantity_of_product_'"):
+                bind_update_quantities(req, product)
+        except KeyError:
+            pass
+        bind_payment_link(req)
+        bind_all_multiple_items_on_post(req)
+    else:
+        document["main_area"].html = "error " + req.text
+
+
+def on_get_complete(req, callbacks=None):
+    if req.status == 200 or req.status == 0:
+        #  Take our response and inject it into the html div with id='main'
+        document["main_area"].html = req.text
+        if callbacks is not None:
+            for callback in callbacks:
+                callback(req)
+        bind_my_acc_button(req)
+        bind_register_link(req)
+        bind_register_footer_link(req)
+        bind_register_button(req)
+        bind_post_review_button(req)
+        bind_payment_link(req)
+        bind_all_multiple_items(req)
+        bind_all_header_footer_links(req)
+        bind_logout_button(req)
+    else:
+        document["main_area"].html = "error " + req.text
     
 
 def contact_link_click(ev):
@@ -294,7 +305,6 @@ def logo_link_click(ev):
     get_data("/main_page", qs, callback)
 
 
-
 def products_link_click(ev):
     get_data("/products_page", qs)
 
@@ -303,13 +313,21 @@ def products_id_click(ev):
     id = (ev.currentTarget.id).split("_")[3]
     get_data("/single_product", "product={}".format(id))
 
+
+def product_plus_button_click(ev):
+    id = (ev.currentTarget.id).split("product_plus_")[1]
+    post_data("/add_to_cart", "product_id={}".format(id))
+
+
 def product_quantity(ev):
     id = (ev.currentTarget.id).split("_")[3]
     get_data("/single_product", "product={}".format(id))
 
+
 def products_hardcoded_id_click(ev):
     id = 1
     get_data("/single_product", "product={}".format(id))
+
 
 def link_404_click(ev):
     get_data("/page_404", qs)
@@ -380,8 +398,10 @@ def account_click(ev):
     callbacks = [bind_register_link, bind_login_button]
     get_data("/account", qs, callbacks)
 
+
 def payment_link_click(ev):
     get_data("/payment", qs)
+
 
 def register_link_click(ev):
     callbacks = [bind_register_button]
@@ -405,7 +425,7 @@ document['header_tennis_link'].bind('click', products_link_click)
 document['header_football_link'].bind('click', products_link_click)
 document['header_golf_link'].bind('click', products_link_click)
 
-document['footer_running_link'].bind('click', cart_links_click)
+document['footer_running_link'].bind('click', products_link_click)
 document['footer_cycling_link'].bind('click', products_link_click)
 document['footer_triathlon_link'].bind('click', products_link_click)
 document['footer_fitness_link'].bind('click', products_link_click)
@@ -423,7 +443,6 @@ for link in document['main_wrapper'].get(selector="a[class*='go_to_shop'"):
 
 for product in document['main_wrapper'].get(selector="*[class*='article'"):
     product.bind('click', products_hardcoded_id_click)
-
 
 for link in document['main_wrapper'].get(selector="a[class*='page_500'"):
     link.bind('click', link_500_click)
