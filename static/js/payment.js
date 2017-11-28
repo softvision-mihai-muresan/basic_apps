@@ -2,7 +2,7 @@ $(function() {
 
     var owner = $('#owner');
     var cardNumber = $('#cardNumber');
-    var cardNumberField = $('#card-number-field');
+//    var cardNumberField = $('#card-number-field');
     var CVV = $("#cvv");
     var mastercard = $("#mastercard");
     var confirmButton = $('#confirm-purchase');
