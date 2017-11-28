@@ -109,30 +109,46 @@ def bind_my_acc_button(ev):
 
 
 def bind_all_header_footer_links(ev):
-    elements = []
-    elements.append(document['contact_link'].bind('click', contact_link_click))
-    elements.append(document['logo_link'].bind('click', logo_link_click))
-    elements.append(document['header_running_link'].bind('click', products_link_click))
-    elements.append(document['header_fitness_link'].bind('click', products_link_click))
-    elements.append(document['header_tennis_link'].bind('click', products_link_click))
-    elements.append(document['header_football_link'].bind('click', products_link_click))
-    elements.append(document['header_golf_link'].bind('click', products_link_click))
+    elements_bind = []
+    elements_bind.append(document['contact_link'].unbind('click', contact_link_click))
+    elements_bind.append(document['contact_link'].bind('click', contact_link_click))
+    elements_bind.append(document['logo_link'].unbind('click', logo_link_click))
+    elements_bind.append(document['logo_link'].bind('click', logo_link_click))
+    elements_bind.append(document['header_running_link'].unbind('click', products_link_click))
+    elements_bind.append(document['header_running_link'].bind('click', products_link_click))
+    elements_bind.append(document['header_fitness_link'].unbind('click', products_link_click))
+    elements_bind.append(document['header_fitness_link'].bind('click', products_link_click))
+    elements_bind.append(document['header_tennis_link'].unbind('click', products_link_click))
+    elements_bind.append(document['header_tennis_link'].bind('click', products_link_click))
+    elements_bind.append(document['header_football_link'].unbind('click', products_link_click))
+    elements_bind.append(document['header_football_link'].bind('click', products_link_click))
+    elements_bind.append(document['header_golf_link'].unbind('click', products_link_click))
+    elements_bind.append(document['header_golf_link'].bind('click', products_link_click))
 
-    elements.append(document['footer_running_link'].bind('click', products_link_click))
-    elements.append(document['footer_cycling_link'].bind('click', products_link_click))
-    elements.append(document['footer_triathlon_link'].bind('click', products_link_click))
-    elements.append(document['footer_fitness_link'].bind('click', products_link_click))
-    elements.append(document['footer_tennis_link'].bind('click', products_link_click))
-    elements.append(document['footer_more_sports_link'].bind('click', products_link_click))
-    elements.append(document['footer_style_link'].bind('click', products_link_click))
-    elements.append(document['footer_special_link'].bind('click', products_link_click))
-    elements.append(document['footer_brand_events_link'].bind('click', products_link_click))
-    elements.append(document['cart_link'].bind('click', cart_links_click))
-    for element in elements:
+    elements_bind.append(document['footer_running_link'].unbind('click', products_link_click))
+    elements_bind.append(document['footer_running_link'].bind('click', products_link_click))
+    elements_bind.append(document['footer_cycling_link'].unbind('click', products_link_click))
+    elements_bind.append(document['footer_cycling_link'].bind('click', products_link_click))
+    elements_bind.append(document['footer_triathlon_link'].unbind('click', products_link_click))
+    elements_bind.append(document['footer_triathlon_link'].bind('click', products_link_click))
+    elements_bind.append(document['footer_fitness_link'].unbind('click', products_link_click))
+    elements_bind.append(document['footer_fitness_link'].bind('click', products_link_click))
+    elements_bind.append(document['footer_tennis_link'].unbind('click', products_link_click))
+    elements_bind.append(document['footer_tennis_link'].bind('click', products_link_click))
+    elements_bind.append(document['footer_more_sports_link'].unbind('click', products_link_click))
+    elements_bind.append(document['footer_more_sports_link'].bind('click', products_link_click))
+    elements_bind.append(document['footer_style_link'].unbind('click', products_link_click))
+    elements_bind.append(document['footer_style_link'].bind('click', products_link_click))
+    elements_bind.append(document['footer_special_link'].unbind('click', products_link_click))
+    elements_bind.append(document['footer_special_link'].bind('click', products_link_click))
+    elements_bind.append(document['footer_brand_events_link'].unbind('click', products_link_click))
+    elements_bind.append(document['footer_brand_events_link'].bind('click', products_link_click))
+    elements_bind.append(document['cart_link'].unbind('click', cart_links_click))
+    elements_bind.append(document['cart_link'].bind('click', cart_links_click))
+    for element in elements_bind:
         try:
             element
         except: pass
-
 
 def bind_all_multiple_items(ev):
     try:
