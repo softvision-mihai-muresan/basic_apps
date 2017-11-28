@@ -88,6 +88,8 @@ class Cart(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
     product_id = db.Column(db.Integer, db.ForeignKey('products.product_id'))
     quantity = db.Column(db.Integer)
+    product = db.relationship('Product', backref=db.backref('cart', lazy=True))
+
 
     def __init__(self, user_id, product_id, quantity):
         self.user_id = user_id
