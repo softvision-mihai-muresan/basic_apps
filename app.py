@@ -172,6 +172,7 @@ def cart_pg():
     total_price = 0
     for item in cart_items:
         total_price += (item.product.product_price * float(item.quantity))
+    total_price = round(total_price, 2)
     return render_template('cart.html', cart_items=cart_items, total_price=total_price)
 
 
@@ -182,6 +183,7 @@ def remove_cart_item_action():
     total_price = 0
     for item in cart_items:
         total_price += (item.product.product_price * float(item.quantity))
+    total_price = round(total_price, 2)
     db.session.delete(cart_row)
     db.session.commit()
     from time import sleep
@@ -197,6 +199,7 @@ def update_quantity_action():
     total_price = 0
     for item in cart_items:
         total_price += (item.product.product_price * float(item.quantity))
+    total_price = round(total_price, 2)
     db.session.commit()
     return render_template('cart.html', cart_items=cart_items, total_price=total_price)
 

@@ -116,7 +116,6 @@ def bind_all_header_footer_links(ev):
     elements = []
     elements.append(document['contact_link'].bind('click', contact_link_click))
     elements.append(document['logo_link'].bind('click', logo_link_click))
-
     elements.append(document['header_running_link'].bind('click', products_link_click))
     elements.append(document['header_fitness_link'].bind('click', products_link_click))
     elements.append(document['header_tennis_link'].bind('click', products_link_click))
@@ -431,6 +430,7 @@ except: pass
 
 bind_register_link()
 bind_logout_button()
+document['cart_link'].bind('click', cart_links_click)
 document['contact_link'].bind('click', contact_link_click)
 document['logo_link'].bind('click', logo_link_click)
 document['footer_signup'].bind('click', register_link_click)
