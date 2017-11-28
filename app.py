@@ -203,9 +203,16 @@ def update_quantity_action():
 
 @application.route("/add_to_cart", methods=['POST'])
 def add_to_cart():
-    added_item = Cart(g.user.user_id, request.form['product_id'], 1)
-    db.session.add(added_item)
-    db.session.commit()
+    cart_items = Cart.query.filter_by(user_id=g.user.user_id, product_id=request.form['product_id']).all()
+    print(len(cart_items))
+    if len(cart_items) >= 1:
+        cart_row = Cart.query.filter_by(user_id=g.user.user_id, product_id=request.form['product_id']).one()
+        cart_row.quantity += 1
+        db.session.commit()
+    else:
+        added_item = Cart(g.user.user_id, request.form['product_id'], 1)
+        db.session.add(added_item)
+        db.session.commit()
     products = Product.query.all()
     return render_template('product.html', products=products)
 
