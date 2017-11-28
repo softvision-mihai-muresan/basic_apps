@@ -108,10 +108,6 @@ def bind_my_acc_button(ev):
     except: pass
 
 
-def cart_links_click(ev):
-    get_data("/cart", qs)
-
-
 def bind_all_header_footer_links(ev):
     elements = []
     elements.append(document['contact_link'].bind('click', contact_link_click))
@@ -131,6 +127,7 @@ def bind_all_header_footer_links(ev):
     elements.append(document['footer_style_link'].bind('click', products_link_click))
     elements.append(document['footer_special_link'].bind('click', products_link_click))
     elements.append(document['footer_brand_events_link'].bind('click', products_link_click))
+    elements.append(document['cart_link'].bind('click', cart_links_click))
     for element in elements:
         try:
             element
@@ -240,6 +237,19 @@ def bind_product_add_cart_button(ev):
     except:
         pass
 
+
+def bind_cart_link(ev=None):
+    try:
+        document["cart_link"].unbind('click', cart_links_click)
+    except:
+        pass
+
+    try:
+        document["cart_link"].bind('click', cart_links_click)
+    except:
+        pass
+
+
 def reload_page(ev):
     window.location.reload()
 
@@ -304,7 +314,11 @@ def on_get_complete(req, callbacks=None):
         # bind_product_add_cart_button(req)
     else:
         document["main_area"].html = "error " + req.text
-    
+
+
+def cart_links_click(ev):
+    get_data("/cart", qs)
+
 
 def contact_link_click(ev):
     get_data("/contact", qs)
@@ -430,7 +444,7 @@ except: pass
 
 bind_register_link()
 bind_logout_button()
-document['cart_link'].bind('click', cart_links_click)
+bind_cart_link()
 document['contact_link'].bind('click', contact_link_click)
 document['logo_link'].bind('click', logo_link_click)
 document['footer_signup'].bind('click', register_link_click)

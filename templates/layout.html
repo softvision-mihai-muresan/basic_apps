@@ -67,8 +67,8 @@
                     <ul class="header-in">
                         {% if g.user.is_authenticated %}
                         <li id="myacc4"><a href="javascript:;">{{ g.user.last_name }}</a></li>
-                        {% endif %}
                          <li id="cart_link" ><a href="javascript:;" >CART</a></li>
+                        {% endif %}
                         <!--<li>-->
                             <!--<select class="in-drop">-->
                               <!--<option value="Dollars" class="in-of">Dollars</option>-->
@@ -150,11 +150,10 @@
     {% include "footer.html" %}
         <!--Brython files-->
     <script type="text/javascript" src="{{ url_for('static', filename='brython/brython.js') }}"></script>
-
-      <script type="text/javascript" src="{{ url_for('static', filename='brython/brython_stdlib.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='brython/brython_stdlib.js') }}"></script>
     <script type="text/python" src="{{ url_for('static', filename='brython/ajax.py') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='js/payment.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.payform.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/payment.js') }}"></script>
     </div>
   </body>
 </html>

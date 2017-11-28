@@ -64,10 +64,12 @@
 									<!--</li>-->
 								<!--</ul>-->
 							<!--</div>-->
+							{% if g.user.is_authenticated %}
 							<form  method="POST">
 								<input type="hidden" id="product_id" value="{{ product.product_id }}">
 								<a id="product_details_add_cart_button" style="cursor: pointer;" class="cart">Add to cart</a>
 							</form>
+							{% endif %}
 						</div>
 					</div>
 				<div class="clearfix"> </div>
