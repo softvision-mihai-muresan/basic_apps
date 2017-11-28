@@ -117,13 +117,12 @@ def bind_all_header_footer_links(ev):
     elements.append(document['contact_link'].bind('click', contact_link_click))
     elements.append(document['logo_link'].bind('click', logo_link_click))
 
-    elements.append(document['header_running_link'].bind('click', cart_links_click))
+    elements.append(document['header_running_link'].bind('click', products_link_click))
     elements.append(document['header_fitness_link'].bind('click', products_link_click))
     elements.append(document['header_tennis_link'].bind('click', products_link_click))
     elements.append(document['header_football_link'].bind('click', products_link_click))
     elements.append(document['header_golf_link'].bind('click', products_link_click))
 
-    # elements.append(document['footer_running_link'].bind('click', cart_links_click))
     elements.append(document['footer_running_link'].bind('click', products_link_click))
     elements.append(document['footer_cycling_link'].bind('click', products_link_click))
     elements.append(document['footer_triathlon_link'].bind('click', products_link_click))
@@ -160,6 +159,20 @@ def bind_all_multiple_items(ev):
             bind_product_link_hardcoded(ev, product)
     except KeyError:
         pass
+    bind_all_multiple_items_on_post(ev)
+
+
+def bind_all_multiple_items_on_post(ev):
+    try:
+        for button in document['all_products'].get(selector="b[id*='product_plus_'"):
+            bind_product_plus_button(ev, button)
+    except KeyError:
+        pass
+    try:
+        for product in document['all_products'].get(selector="a[id*='single_page_product_'"):
+            bind_single_product_link(ev, product)
+    except KeyError:
+        pass
     try:
         for product in document['cart_item_list'].get(selector="input[id*='quantity_of_product_'"):
             bind_update_quantities(ev, product)
@@ -168,15 +181,6 @@ def bind_all_multiple_items(ev):
     try:
         for product in document['cart_item_list'].get(selector="input[id*='remove_cart_item_'"):
             bind_remove_cart_item_button(ev, product)
-    except KeyError:
-        pass
-    bind_all_multiple_items_on_post(ev)
-
-
-def bind_all_multiple_items_on_post(ev):
-    try:
-        for button in document['all_products'].get(selector="b[id*='product_plus_'"):
-            bind_product_plus_button(ev, button)
     except KeyError:
         pass
 
@@ -226,6 +230,17 @@ def bind_product_plus_button(ev, product_plus):
         pass
 
 
+def bind_product_add_cart_button(ev):
+    try:
+        document["product_details_add_cart_button"].unbind('click', product_add_button_button_click)
+    except:
+        pass
+
+    try:
+        document["product_details_add_cart_button"].bind('click', product_add_button_button_click)
+    except:
+        pass
+
 def reload_page(ev):
     window.location.reload()
 
@@ -265,11 +280,6 @@ def on_post_complete(req, callbacks=None):
         if callbacks is not None:
             for callback in callbacks:
                 callback(req)
-        try:
-            for product in document['cart_item_list'].get(selector="input[id*='quantity_of_product_'"):
-                bind_update_quantities(req, product)
-        except KeyError:
-            pass
         bind_payment_link(req)
         bind_all_multiple_items_on_post(req)
     else:
@@ -292,6 +302,7 @@ def on_get_complete(req, callbacks=None):
         bind_all_multiple_items(req)
         bind_all_header_footer_links(req)
         bind_logout_button(req)
+        # bind_product_add_cart_button(req)
     else:
         document["main_area"].html = "error " + req.text
     
@@ -310,13 +321,18 @@ def products_link_click(ev):
 
 
 def products_id_click(ev):
+    callback = [bind_product_add_cart_button]
     id = (ev.currentTarget.id).split("_")[3]
-    get_data("/single_product", "product={}".format(id))
+    get_data("/single_product", "product={}".format(id), callback)
 
 
 def product_plus_button_click(ev):
     id = (ev.currentTarget.id).split("product_plus_")[1]
     post_data("/add_to_cart", "product_id={}".format(id))
+
+
+def product_add_button_button_click(ev):
+    post_data("/add_to_cart", "product_id={}".format(document["product_id"].value))
 
 
 def product_quantity(ev):
